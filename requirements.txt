@@ -1,0 +1,6 @@
+beautifulsoup4
+lxml
+requests
+selenium
+django 
+django-debug-toolbar
