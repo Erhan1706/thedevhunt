@@ -31,15 +31,17 @@ while True:
 driver.quit()
 """
 
-page_source: Response =  requests.get(URL)
-soup: BeautifulSoup = BeautifulSoup(page_source.text, "lxml")
+def get_vacancies():
+    page_source: Response =  requests.get(URL)
+    soup: BeautifulSoup = BeautifulSoup(page_source.text, "lxml")
 
-def find_vacancies_script(tag):
-    return (tag.name == "script" and 
-            "var VACANCIES =" in tag.string if tag.string else False)
+    def find_vacancies_script(tag):
+        return (tag.name == "script" and 
+                "var VACANCIES =" in tag.string if tag.string else False)
 
-vacancies_script = soup.find(find_vacancies_script)
-json_vacancies = json.loads(vacancies_script.contents[0].split("var VACANCIES = ")[1].strip())
-print(type(json_vacancies))
+    vacancies_script = soup.find(find_vacancies_script)
+    json_vacancies = json.loads(vacancies_script.contents[0].split("var VACANCIES = ")[1].strip())
+    return json_vacancies
+
 ## TO DO: Filter based on location and tech positions 
 
