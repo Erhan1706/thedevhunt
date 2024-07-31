@@ -4,3 +4,4 @@ requests
 selenium
 django 
 django-debug-toolbar
+django-browser-reload
