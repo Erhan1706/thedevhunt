@@ -1,5 +1,5 @@
-<!DOCTYPE html>
 {% load static %}
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -8,6 +8,18 @@
     <link rel="stylesheet" href="{% static 'css/output.css' %}" type="text/css"> 
   </head>
   <body>
-    <div class="text-violet-800 text-2xl"> Title2 test1</div>
+    <div class="fixed top-0 right-0 left-0 h-16 flex justify-between border-gray-300 border-b-2"> 
+      <div class="flex items-center">
+        <a href="{% url 'home' %}" class="text-xl font-bold text-blue-500 ml-16">The<span class="text-gray-600">Dev</span>Hunt</a>
+      </div>
+      <div class="flex items-center mr-8">
+        <a class="text-m text-gray-500 mx-6"> Listings </a>
+        <a class="text-m text-gray-500 mx-6"> Companies </a>
+      </div>
+    </div>
+    <div class="mt-16">
+      {% block jobs %}
+      {% endblock jobs %}
+    </div>
   </body>
 </html>

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load static %}
+{% block jobs %}
+<div class="flex items-center justify-center">
+  <div class="grid grid-cols-1 gap-5 w-auto">
+    {% for job in job_list %}
+      <div class="border p-2"> {{ job.title }} </div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
