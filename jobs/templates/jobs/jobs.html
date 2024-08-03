@@ -1,10 +1,39 @@
-{% extends "base.html" %}
-{% load static %}
-{% block jobs %}
-<div class="flex items-center justify-center">
-  <div class="grid grid-cols-1 gap-5 w-auto">
+{% extends "base.html" %} {% load static %} {% block core %}
+<div class="flex flex-col w-3/5">
+  <h1 class="text-3xl bold mt-5">All listings</h1>
+  <p class="mt-1">Last Updated: <span class=""> </span></p>
+  <div class="grid grid-cols-1 gap-5 w-auto mt-12">
     {% for job in job_list %}
-      <div class="border p-2"> {{ job.title }} </div>
+    <div
+      class="border-2 rounded bg-white hover:bg-slate-100 w-full drop-shadow-md"
+    >
+      <a
+        href="{% url 'individual-opening' job.company job.slug %}"
+        class="w-full flex items-center justify-center "
+      >
+        <div class="p-2 flex-none w-12 h-12 mr-2">
+          <img
+            class="h-full w-full"
+            src="{% static 'logos/'%}{{job.company|lower}}.png"
+            alt="{{ job.company }} logo"
+          />
+        </div>
+        <div class="flex flex-col flex-grow py-2 pr-3">
+          <div class="text-xl font-bold py-1">{{ job.title }}</div>
+          <div class="flex items-center">
+            <img
+              class="h-3 w-3 mr-1"
+              src="{% static 'assets/location.svg'%}"
+              alt="location icon"
+            />
+            <div class="text-xs text-slate-500 list-image-location font-gothic border bg-sky-50 rounded-md p-0.5 mx-1 hover:bg-sky-100">
+              {{ job.location|first }}
+            </div>
+          </div>
+          <div class="text-sm font-gothic">{{ job.company }}</div>
+        </div>
+      </a>
+    </div>
     {% endfor %}
   </div>
 </div>

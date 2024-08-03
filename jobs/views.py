@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-def listings(request):
+def job_listings(request):
   data = [ {
         "id": 25,
         "title": "Support Engineer",
@@ -28,7 +28,8 @@ def listings(request):
         ],
         "language": [
             "English"
-        ]
+        ],
+        "company": "JetBrains"
     },
     {
         "id": 115,
@@ -55,7 +56,11 @@ def listings(request):
         ],
         "language": [
             "English"
-        ]
+        ],
+        "company": "JetBrains"
     }]
   context = {"job_list": data}
   return render(request, 'jobs/jobs.html', context)
+
+def opening(request, company, opening):
+  return render(request, 'jobs/opening.html')
