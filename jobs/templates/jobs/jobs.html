@@ -47,19 +47,21 @@
             >
               {{job.role}}
             </div>
-            {% for tech in job.technologies %}
-            <div
-              class="bg-red-100 ring-2 ring-offset-1 ring-red-400 rounded-md py-1 px-2.5 text-xs text-red-700 hover:bg-blue-200 duration-100"
-            >
-              {{tech}}
+            <div class="flex flex-wrap space-x-4">
+              {% for tech in job.technologies %}
+              <div
+                class="bg-red-100 ring-2 ring-offset-1 ring-red-400 rounded-md py-1 px-2.5 text-xs text-red-700 hover:bg-blue-200 duration-100"
+              >
+                {{tech}}
+              </div>
+              {% endfor%} {% if job.remote %}
+              <div
+                class="bg-green-100 ring-2 ring-offset-1 ring-green-400 rounded-md p-1 text-xs text-green-700 hover:bg-red-200 duration-100"
+              >
+                Remote
+              </div>
+              {% endif %}
             </div>
-            {% endfor%} {% if job.remote %}
-            <div
-              class="bg-green-100 ring-2 ring-offset-1 ring-green-400 rounded-md p-1 text-xs text-green-700 hover:bg-red-200 duration-100"
-            >
-              Remote
-            </div>
-            {% endif %}
           </div>
         </div>
       </a>

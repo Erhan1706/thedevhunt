@@ -1,7 +1,13 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from .scraper_intellij import get_vacancies
+from .serializers import JobSerializer
+from .scrapers.scraper_factory import ScraperFactory
 
 @api_view(['GET'])
 def getJobs(request):
-  return Response(get_vacancies())
+  scraper_factory = ScraperFactory()
+  scraper = scraper_factory.get_scraper("jetbrains")
+  listings = scraper.get_vacancies()
+
+  serializer = JobSerializer(listings, many=True)
+  return Response(serializer.data)
