@@ -9,5 +9,6 @@ def getJobs(request):
   scraper = scraper_factory.get_scraper("jetbrains")
   listings = scraper.get_vacancies()
 
-  serializer = JobSerializer(listings, many=True)
+  serializer = JobSerializer(data=listings, many=True)
+  if serializer.is_valid(): serializer.save()
   return Response(serializer.data)

@@ -8,5 +8,5 @@ class Job(models.Model):
   technologies = models.JSONField()
   location = models.JSONField()
   company = models.CharField(max_length=200)
-  language = models.JSONField()
   remote = models.BooleanField()
+  last_modified = models.DateTimeField(auto_now=True)

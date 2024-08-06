@@ -8,18 +8,20 @@
       class="border-2 rounded bg-white duration-200 hover:bg-slate-100 w-full drop-shadow-md"
     >
       <a
-        href="{% url 'individual-opening' job.company job.slug %}"
+        href="{% url 'individual-opening' job.company|lower job.slug|lower %}"
         class="w-full flex items-center justify-center"
+        target="_blank"
       >
         <div class="flex-none w-10 h-10 mx-4">
           <img
             class="h-full w-full"
-            src="{% static 'logos/'%}{{job.company|lower}}.png"
+            src="{%static 'logos/'%}{{job.company|lower}}.png"
             alt="{{ job.company }} logo"
           />
         </div>
         <div class="flex flex-col flex-grow py-2 pr-3 my-2">
           <div class="text-xl font-bold py-1 mb-2">{{ job.title }}</div>
+          {% if job.location|length > 0 %}
           <div class="flex items-center mb-1">
             <img
               class="h-3 w-3 mr-1"
@@ -27,15 +29,34 @@
               alt="location icon"
             />
             <div class="flex flex-wrap w-auto">
-              {% for location in job.location %}
+              {% if job.location|length < 4 %} 
+              {% for location in job.location%}
               <div
-                class="text-xs text-slate-500 w-auto list-image-location font-gothic border bg-sky-50 rounded-md py-0.5 px-1 m-1 hover:bg-sky-100"
+                class="text-xs text-slate-500 w-auto list-image-location font-gothic border bg-gray-100 rounded-md py-0.5 px-1 m-1 hover:bg-sky-100"
               >
                 {{ location }}
               </div>
-              {% endfor %}
+              {% endfor %} 
+              {% else %}
+              {% for location in job.location|slice:":3"%}
+              <div
+                class="text-xs text-slate-500 w-auto font-gothic border bg-gray-100 rounded-md py-0.5 px-1 m-1 hover:bg-sky-100"
+              >
+                {{ location }}
+              </div>
+              {% endfor %} 
+              <div
+                hx-get="{% url 'show_locations' job.location %}"
+                hx-swap="outerHTML"
+                hx-trigger="click"
+                class="show-more text-xs text-red-500 w-auto font-gothic border bg-gray-100 ring-1 ring-red-500 rounded-md py-0.5 px-1 m-1 hover:bg-sky-100"
+              >
+                Show more
+              </div>
+              {% endif %}
             </div>
           </div>
+          {% endif %}
           <div
             class="text-sm font-gothic hover:text-red-500 hover:underline shrink w-fit"
           >

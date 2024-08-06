@@ -5,12 +5,14 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>TheDevHunt - Find tech job listings in Europe</title>
+     <!-- Tailwind -->
     <link
       rel="stylesheet"
       href="{% static 'css/output.css' %}"
       type="text/css"
     />
-    <!-- Tailwind -->
+    <!--htmx --> 
+    <script src="{% static 'js/htmx.min.js' %}"></script>
   </head>
   <body>
     <nav
@@ -29,8 +31,7 @@
       </div>
     </nav>
     <div class="flex min-h-screen py-24 px-32 bg-gray-100">
-      {% block core %} {% endblock core %} 
-      {% block filter %}
+      {% block core %} {% endblock core %} {% block filter %}
       <div class="flex flex-col bg-white h-120 w-2/5 p-4 m-4 ml-12 rounded-lg">
         <h2 class="text-xl">Filters</h2>
         <div class="flex">
@@ -39,5 +40,6 @@
       </div>
       {% endblock filter %}
     </div>
+    <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
   </body>
 </html>
