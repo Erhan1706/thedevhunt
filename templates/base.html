@@ -13,6 +13,7 @@
     />
     <!--htmx --> 
     <script src="{% static 'js/htmx.min.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.5.13/src/index.min.js"></script>
   </head>
   <body>
     <nav
@@ -22,24 +23,26 @@
         <a
           href="{% url 'job_listings' %}"
           class="text-xl font-bold text-blue-500 ml-16"
-          >The<span class="text-gray-600">Dev</span>Hunt</a
-        >
-      </div>
-      <div class="flex items-center mr-8">
-        <a class="text-m text-gray-500 mx-6"> Listings </a>
-        <a class="text-m text-gray-500 mx-6"> Companies </a>
-      </div>
-    </nav>
-    <div class="flex min-h-screen py-24 px-32 bg-gray-100">
-      {% block core %} {% endblock core %} {% block filter %}
-      <div class="flex flex-col bg-white h-120 w-2/5 p-4 m-4 ml-12 rounded-lg">
-        <h2 class="text-xl">Filters</h2>
-        <div class="flex">
-          <p class="my-3">Location</p>
+        >The<span class="text-gray-600">Dev</span>Hunt</a
+          >
         </div>
+        <div class="flex items-center mr-8">
+          <a class="text-m text-gray-500 mx-6"> Listings </a>
+          <a class="text-m text-gray-500 mx-6"> Companies </a>
+        </div>
+      </nav>
+      <div class="flex justify-center min-h-screen py-24 px-32 bg-gray-100">
+        {% block content %} 
+        {% endblock content %} 
+        {% block filter %}
+          <div class="flex flex-col bg-white h-50 w-2/5 p-4 m-4 ml-12 rounded-lg">
+            <h2 class="text-xl">Filters</h2>
+            <div class="flex">
+              <p class="my-3">Location</p>
+            </div>
+          </div>
+        {% endblock filter %}
       </div>
-      {% endblock filter %}
-    </div>
-    <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
-  </body>
-</html>
+      <script type="text/javascript" src="{% static 'js/app.js' %}"></script>
+    </body>
+  </html>

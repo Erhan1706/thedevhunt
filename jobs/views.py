@@ -8,9 +8,10 @@ def job_listings(request):
     return render(request, 'jobs/jobs.html', context)
 
 def opening(request, company, opening):
-    return render(request, 'jobs/opening.html')
+    job = Job.objects.get(company__iexact=company, slug__iexact=opening)
+    return render(request, 'jobs/opening.html', {"job": job})
 
 def show_all_locations(request, locations):
-    arr  = ast.literal_eval(locations)
-    context = {"locations": arr}
+    locations  = ast.literal_eval(locations)
+    context = {"locations": locations[3:]}
     return render(request, 'jobs/locations_partial.html', context)

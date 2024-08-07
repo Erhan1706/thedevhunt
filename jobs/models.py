@@ -10,3 +10,4 @@ class Job(models.Model):
   company = models.CharField(max_length=200)
   remote = models.BooleanField()
   last_modified = models.DateTimeField(auto_now=True)
+  link_to_apply = models.URLField()

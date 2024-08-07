@@ -26,11 +26,12 @@ class JetbrainsScraper(Scraper):
         for job in jobs:
             if len(job["role"]) > 2: print(f"{job['role']}")
             job["role"] = job["role"][0]
-            job["remote"] = "remote" in job["location"].lower()
+            job["remote"] = any("remote" in loc.lower() for loc in job["location"])
             job["company"] = "Jetbrains"
             del job["team"]
             del job["language"]
             if "technologies" not in job: job["technologies"] = []
+            job["link_to_apply"] = f"https://www.jetbrains.com/careers/jobs/{job['slug']}/"
         return jobs
     
     def get_vacancies(self):
