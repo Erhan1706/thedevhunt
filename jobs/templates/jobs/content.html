@@ -1,0 +1,16 @@
+{% extends "base.html" %} {% load static %}
+{% block content %}
+  <div class="flex flex-col w-3/5">
+    <h1 class="text-3xl bold mt-5">All listings</h1>
+    <p class="mt-1">Last Updated: <span class=""> </span></p>
+    <div class="grid grid-cols-1 gap-5 w-auto mt-12" id="job_list">
+      {% include 'jobs/job_list.html' %}
+    </div>
+  </div>
+{% endblock %}
+
+{% block filter %}
+  <div class="flex flex-col bg-white h-50 w-2/5 p-4 m-4 ml-12 rounded-lg">
+    {% include 'jobs/filters.html' %}
+  </div>
+{% endblock %}

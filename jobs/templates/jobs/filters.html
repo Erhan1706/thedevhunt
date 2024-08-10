@@ -1,0 +1,25 @@
+<h2 class="text-2xl font-bold p-2">Filters</h2>
+<div
+  id="current_filters"
+  hx-get="{% url 'get_filters' %}"
+  hx-trigger="load, filterChanged from:body"
+  class="flex flex-wrap"
+></div>
+<p class="text-xl p-2">Location</p>
+<div class="flex flex-wrap" id="country_list">
+  {% include 'jobs/partials/country_filter_partial.html'%}
+</div>
+<div class="flex items-center p-2">
+  <input
+    id="default_checkbox"
+    type="checkbox"
+    name="remote"
+    class="w-5 h-5 text-blue-600 bg-gray-100 border-gray-300 rounded-md focus:ring-blue-500 focus:ring-2 cursor-pointer"
+    hx-post="{% url 'add_filter'%}"
+    hx-trigger="change"
+    hx-target="#job_list"
+  />
+  <label for="default_checkbox" class="ms-2 text-md text-slate-600"
+  >Remote
+  </label>
+</div>

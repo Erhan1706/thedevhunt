@@ -1,0 +1,10 @@
+repos:
+  - repo: https://github.com/rtts/djhtml
+    rev: 3.0.6
+    hooks:
+      - id: djhtml
+        exclude: .venv/
+      - id: djcss
+        exclude: .venv/
+      - id: djjs
+        exclude: .venv/

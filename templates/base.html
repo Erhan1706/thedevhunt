@@ -15,7 +15,7 @@
     <script src="{% static 'js/htmx.min.js' %}"></script>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/typography@0.5.13/src/index.min.js"></script>
   </head>
-  <body>
+  <body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
     <nav
       class="fixed top-0 right-0 left-0 h-16 flex justify-between border-gray-300 border-b-2 z-20 bg-white"
     >
@@ -32,15 +32,9 @@
         </div>
       </nav>
       <div class="flex justify-center min-h-screen py-24 px-32 bg-gray-100">
-        {% block content %} 
-        {% endblock content %} 
+        {% block content %}
+        {% endblock content %}
         {% block filter %}
-          <div class="flex flex-col bg-white h-50 w-2/5 p-4 m-4 ml-12 rounded-lg">
-            <h2 class="text-xl">Filters</h2>
-            <div class="flex">
-              <p class="my-3">Location</p>
-            </div>
-          </div>
         {% endblock filter %}
       </div>
       <script type="text/javascript" src="{% static 'js/app.js' %}"></script>

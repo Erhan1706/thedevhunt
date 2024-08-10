@@ -6,3 +6,5 @@ django
 django-debug-toolbar
 django-browser-reload
 djangorestframework
+djhtml
+pre-commit
