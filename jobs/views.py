@@ -11,18 +11,20 @@ from django.template import loader
 eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
                     "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
                     "Cyprus", "Estonia", "Finland", "Greece", "Hungary", "Italy", "Bulgaria", "Switzerland", "Turkey",
-                    "Iceland", "Latvia", "Lithuania", "Luxembourg", "Bulgaria", "Malta", "Russia", "Serbia", "Slovakia", 
-                    "Ukraine", "Slovenia", "Bulgaria", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
+                    "Iceland", "Latvia", "Lithuania", "Luxembourg", "Malta", "Russia", "Serbia", "Slovakia", 
+                    "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
                     "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
 
 @require_http_methods(["GET"])
 def load_main_page(request):
-    filters = request.session.get('filters')
+    filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': []})
     query_set = process_filters(filters, Q())
     jobs = Job.objects.filter(query_set)
 
+    t = Job.objects.values('role').distinct()
+
     return render(request, 'jobs/content.html', {"job_list": jobs, "eu_countries": eu_countries[:12], 
-                                              "show_all_countries": False, "current_filters": filters})
+                "show_all_countries": False, "current_filters": filters, "filtered_locations": filters['locations']})
 
 @require_http_methods(["GET"])
 def get_individual_listing(request, company, opening):
@@ -37,10 +39,29 @@ def show_all_locations(request, locations):
 
 @require_http_methods(["GET"])
 def show_all_countries(request):
-    if request.GET.get('show_all') == 'true':
-        return render(request, 'jobs/partials/country_filter_partial.html', {"eu_countries": eu_countries[12:], "show_all_countries": True})
+    filters = request.session.get('filters', {'locations': [], 'roles': [], 'technologies': []})
+    if request.GET.get('show_all') == 'True':
+        request.session['show_all_countries'] = True
+        return render(request, 'jobs/partials/country_filter_partial.html', {"filtered_locations": filters['locations'],
+                      "eu_countries": eu_countries[12:], "show_all_countries": True})
     else:
-        return render(request, 'jobs/partials/country_filter_partial.html', {"eu_countries": eu_countries[:12], "show_all_countries": False})
+        request.session['show_all_countries'] = False
+        return render(request, 'jobs/partials/country_filter_partial.html', {"filtered_locations": filters['locations'],
+                      "eu_countries": eu_countries[:12], "show_all_countries": False})
+
+@require_http_methods(["GET"])
+def update_country_list(request):
+    filters = request.session.get('filters', {'locations': [], 'roles': [], 'technologies': []})
+    show_all = request.session.get('show_all_countries', False)
+    if show_all:
+        rendered_countries = eu_countries
+    else:
+        rendered_countries = eu_countries[:12]
+
+
+    return render(request, 'jobs/partials/country_filter_partial.html', {"filtered_locations": filters['locations'],
+                  "eu_countries": rendered_countries, "show_all_countries": show_all})
+
 
 @require_http_methods(["POST"])
 def add_filter(request):
@@ -56,7 +77,6 @@ def add_filter(request):
     elif location:
         query_set &= Q(location__icontains=location)
         filters['locations'].append(location)
-        eu_countries.remove(location)
 
     jobs = Job.objects.filter(query_set)
 
@@ -91,7 +111,6 @@ def remove_filter(request):
     location = request.POST.get('country')
     if location:
         filters['locations'].remove(location)
-        eu_countries.insert(0, location)
 
     query_set = process_filters(filters, Q())
     jobs = Job.objects.filter(query_set)

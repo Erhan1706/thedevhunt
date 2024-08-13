@@ -6,8 +6,67 @@
         <h1 class="text-3xl font-bold mb-6">{{job.title}}</h1>
         {{job.description|safe}}
       </div>
-      <div class="w-1/4 border-l-2 border-gray-200 p-5">
-        TEST
+      <div class="w-1/5 border-gray-200 p-5">
+        <div class="flex items-center my-2">
+          <img
+            class="h-4 w-4"
+            src="{% static 'assets/location.svg'%}"
+            alt="location icon"
+          />
+          <h3 class="font-bold text-xl mx-3 pb-1 font-kanit"> Locations </h3>
+        </div>
+        <div class="flex flex-col space-y-1">
+          {% for location in job.location %}
+            <div class="text-sm font-gothic shrink w-fit">
+              {{ location }}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="flex items-center my-2">
+          <img
+            class="h-4 w-4"
+            src="{% static 'assets/building-solid.svg'%}"
+            alt="building icon"
+          />
+          <h3 class="font-bold text-xl mx-3 pb-1 font-kanit"> Company </h3>
+        </div>
+        <div class="text-sm font-gothic shrink w-fit">{{ job.company }} </div>
+        <div class="flex items-center my-2">
+          <img
+            class="h-4 w-4 my-2"
+            src="{% static 'assets/laptop-solid.svg'%}"
+            alt="laptop icon"
+          />
+          <h3 class="font-bold text-xl mx-3 pb-1 font-kanit"> Skills </h3>
+        </div>
+        <div class="flex flex-col space-y-1">
+          {% for skill in job.technologies %}
+            <div class="text-sm font-gothic shrink w-fit">
+              {{ skill }}
+            </div>
+          {% endfor %}
+        </div>
+        <div class="flex items-center my-2">
+          <img
+            class="h-4 w-4 my-2"
+            src="{% static 'assets/house-solid.svg'%}"
+            alt="house icon"
+          />
+          <h3 class="font-bold text-xl mx-3 pb-1 font-kanit"> Remote </h3>
+          {% if job.remote %}
+            <img
+              class="h-4 w-4 my-1"
+              src="{% static 'assets/check-solid.svg'%}"
+              alt="check icon"
+            />
+          {% else %}
+            <img
+              class="h-4 w-4 my-1"
+              src="{% static 'assets/xmark-solid.svg'%}"
+              alt="x-mark icon"
+            />
+          {% endif %}
+        </div>
       </div>
     </div>
     <div class="flex justify-center">

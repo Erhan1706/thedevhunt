@@ -6,7 +6,10 @@
   class="flex flex-wrap"
 ></div>
 <p class="text-xl p-2">Location</p>
-<div class="flex flex-wrap" id="country_list">
+<div class="flex flex-wrap" id="country_list"
+     hx-get= "{% url 'update_countries' %}"
+     hx-trigger="filterChanged from:body"
+>
   {% include 'jobs/partials/country_filter_partial.html'%}
 </div>
 <div class="flex items-center p-2">

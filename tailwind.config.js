@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         gothic: ["Century Gothic", "sans-serif"],
+        kanit: ["Kanit-Bold", "sans-serif"],
       },
     },
   },
