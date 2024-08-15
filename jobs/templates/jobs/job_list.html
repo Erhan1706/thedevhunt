@@ -1,5 +1,5 @@
 {% load static %} {% load show_locations %} {% load custom_filters %}
-{% for job in job_list %}
+{% for job in page_obj %}
   <div
     class="listing border-2 rounded bg-white duration-200 hover:bg-slate-100 w-full drop-shadow-md"
   >
@@ -73,4 +73,28 @@
 {% empty %}
   <div class="text-center text-2xl mt-5 listing">No jobs available</div>
 {% endfor %}
+{% if page_obj.object_list|length > 0 %}
+  <div class="pagination">
+    <div class="step-links flex justify-center items-center">
+      {% if page_obj.has_previous %}
+        <img
+          src="{% static 'assets/chevron-left-solid.svg'%}"
+          class="w-4 h-4 cursor-pointer"
+          hx-get="{% url 'fetch_page'%}?page={{page_obj.previous_page_number}}"
+          hx-target="#job_list"/>
+      {% endif %}
 
+      <span class="current mx-2 text-md font-gothic">
+        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+      </span>
+
+      {% if page_obj.has_next %}
+        <img
+          src="{% static 'assets/chevron-right-solid.svg'%}"
+          class="w-4 h-4 cursor-pointer"
+          hx-get="{% url 'fetch_page'%}?page={{page_obj.next_page_number}}"
+          hx-target="#job_list"/>
+      {% endif %}
+    </div>
+  </div>
+{% endif %}

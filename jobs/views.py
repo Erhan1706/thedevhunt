@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.views.decorators.http import require_http_methods
 from django.http import HttpResponse
 from django.template import loader
-
+from django.core.paginator import Paginator
 
 eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
                     "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
@@ -15,16 +15,32 @@ eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria",
                     "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
                     "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
 
+
 @require_http_methods(["GET"])
 def load_main_page(request):
     filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': []})
     query_set = process_filters(filters, Q())
     jobs = Job.objects.filter(query_set)
 
-    t = Job.objects.values('role').distinct()
+    #t = Job.objects.values('role').distinct()
+    page_obj = get_page_obj(jobs)
 
-    return render(request, 'jobs/content.html', {"job_list": jobs, "eu_countries": eu_countries[:12], 
+    return render(request, 'jobs/content.html', {"eu_countries": eu_countries[:12], "page_obj": page_obj,
                 "show_all_countries": False, "current_filters": filters, "filtered_locations": filters['locations']})
+
+@require_http_methods(["GET"])
+def fetch_page(request):
+    filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': []})
+    query_set = process_filters(filters, Q())
+    jobs = Job.objects.filter(query_set)
+
+    page_num = request.GET.get("page")
+    page_obj = get_page_obj(jobs, page_num)
+    return render(request, 'jobs/job_list.html', {"page_obj": page_obj})
+
+def get_page_obj(jobs, page_num=1):
+    paginator = Paginator(jobs, 25)
+    return paginator.get_page(page_num)
 
 @require_http_methods(["GET"])
 def get_individual_listing(request, company, opening):
@@ -85,10 +101,11 @@ def add_filter(request):
         filters['locations'].append(location)
 
     jobs = Job.objects.filter(query_set)
+    page_obj = get_page_obj(jobs)
 
     request.session['filters'] = filters
     template = loader.get_template('jobs/job_list.html')
-    response = HttpResponse(template.render({"job_list": jobs, "current_filters": filters}, request))
+    response = HttpResponse(template.render({"page_obj": page_obj, "current_filters": filters}, request))
     response.headers["HX-Trigger"] = "filterChanged"
     return response 
 
@@ -124,9 +141,10 @@ def remove_filter(request):
     query_set = process_filters(filters, Q())
     jobs = Job.objects.filter(query_set)
     request.session['filters'] = filters
+    page_obj = get_page_obj(jobs)
 
     template = loader.get_template('jobs/job_list.html')
-    response = HttpResponse(template.render({"job_list": jobs, "current_filters": filters}, request))
+    response = HttpResponse(template.render({"page_obj": page_obj, "current_filters": filters}, request))
     response.headers["HX-Trigger"] = "filterChanged"
     return response 
 

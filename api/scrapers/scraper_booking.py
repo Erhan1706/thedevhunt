@@ -28,12 +28,10 @@ class BookingScraper(Scraper):
     
   def scrape(self):
     response = requests.request("GET", self.url, headers=self.headers)
-
     if response.status_code == 200:
       try:
         data = response.json() 
-        with open('response.json', 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2) 
+        return data
       except ValueError:
         print("Response content for Booking.com is not valid JSON")
     else:
@@ -45,20 +43,23 @@ class BookingScraper(Scraper):
       return (tag.name == "script" and 
               "window.jobDescriptionConfig = " in tag.string if tag.string else False)
     
-    sleep(0.5) # To avoid getting blocked by the server
-    try:
+    response = None
+    for attempt in range(5):
+      try:
         response = requests.get(url)
-    except ChunkedEncodingError as ex:
-        print(f"Invalid chunk encoding {str(ex)}")
+      except ChunkedEncodingError as ex:
+        print(f"Invalid chunk encoding on: {url}")
+        sleep(2**attempt * 0.4)
 
-    if response.status_code == 200:
+    if response and response.status_code == 200:
       soup: BeautifulSoup = BeautifulSoup(response.content, "lxml")
       script_tag = soup.find(find_description_script)
       description_json = script_tag.text.split("window.jobDescriptionConfig = ")[1]
       description = json.loads(description_json[:-2])
       return description['job']['description']
     else:
-      print(f"Request for {self.url} failed with status code: {response.status_code}")
+      print(f"Request for {url} failed")
+      return None 
     
   
   def transform_data(self, jobs):
@@ -75,9 +76,10 @@ class BookingScraper(Scraper):
         employment_type= 'FULL-TIME',
         remote = True if 'remote' in job['location_name'].lower() or 'remote' in job['street_address'].lower() else False
       )
-      listing.description = self.description_to_html(listing.link_to_apply)
+      description = self.description_to_html(listing.link_to_apply)
+      if not description: continue
+      listing.description = description
       result.append(listing)
-      break 
 
     return result
 
@@ -87,12 +89,11 @@ class BookingScraper(Scraper):
     return [job for job in job_list if any(keyword in job['data']['category'][0].lower() for keyword in tech_keywords)]
   
   def get_vacancies(self):
-    #jobs = self.scrape()
-    with open('./api/scrapers/response.json', 'r', encoding='utf-8') as f:
-      data = json.load(f)
-      jobs = self.filter_tech_jobs(data)
-      jobs = [job['data'] for job in jobs]
-      filtered_jobs = self.filter_eu_jobs(jobs, location_key='country')
-      jobs = self.transform_data(filtered_jobs)
-      #for job in jobs:
-        #job.save()
+    data = self.scrape()
+    jobs = self.filter_tech_jobs(data)
+    jobs = [job['data'] for job in jobs]
+    filtered_jobs = self.filter_eu_jobs(jobs, location_key='country')
+    jobs = self.transform_data(filtered_jobs)
+    for job in jobs:
+      job.save()
+    print('Success')

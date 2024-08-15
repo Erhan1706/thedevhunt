@@ -9,5 +9,6 @@ urlpatterns = [
     path('update_countries/', views.update_country_list, name='update_countries'),
     path('show_locations/<str:locations>', views.show_all_locations, name='show_locations'), 
     path('<slug:company>/<slug:opening>', views.get_individual_listing, name='individual_opening'),
+    path('fetch_page/', views.fetch_page, name='fetch_page'),
     path('', views.load_main_page, name='job_listings'),
 ]
