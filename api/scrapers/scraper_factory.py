@@ -1,8 +1,10 @@
 from .scraper_jetbrains import JetbrainsScraper
+from .scraper_booking import BookingScraper
 
 class ScraperFactory:
     
-    available_scrapers = {"jetbrains": JetbrainsScraper}
+    available_scrapers = {"jetbrains": JetbrainsScraper,
+                          "booking": BookingScraper}
 
     @staticmethod
     def get_scraper(scraper_name):

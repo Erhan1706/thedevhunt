@@ -1,10 +1,12 @@
 beautifulsoup4
 lxml
 requests
-selenium
+selenium?
 django 
 django-debug-toolbar
 django-browser-reload
 djangorestframework
 djhtml
 pre-commit
+requests-html?
+lxml_html_clean?

@@ -28,6 +28,8 @@ def load_main_page(request):
 
 @require_http_methods(["GET"])
 def get_individual_listing(request, company, opening):
+    if company == "booking_com":
+        company = "Booking.com"
     job = get_object_or_404(Job, company__iexact=company, slug__iexact=opening)
     return render(request, 'jobs/listing.html', {"job": job})
 
@@ -71,9 +73,13 @@ def add_filter(request):
     remote = request.POST.get('remote')
     location = request.POST.get('country')
 
-    if remote and remote == 'on':
-        query_set &= Q(remote=True)
-        filters['remote'] = True
+    if remote:
+        if remote == 'on':
+            filters['remote'] = True
+            query_set &= Q(remote=True)
+        if remote == 'off':
+            return remove_filter(request)
+
     elif location:
         query_set &= Q(location__icontains=location)
         filters['locations'].append(location)
@@ -109,6 +115,9 @@ def remove_filter(request):
         return HttpResponse(status=400)
     
     location = request.POST.get('country')
+    remote = request.POST.get('remote')
+    if remote and remote == 'off':
+        filters.pop('remote')
     if location:
         filters['locations'].remove(location)
 

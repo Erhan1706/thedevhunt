@@ -12,7 +12,8 @@
 >
   {% include 'jobs/partials/country_filter_partial.html'%}
 </div>
-<div class="flex items-center p-2">
+<form class="flex items-center p-2">
+  <input type="hidden" name="remote" value="off">
   <input
     id="default_checkbox"
     type="checkbox"
@@ -21,8 +22,9 @@
     hx-post="{% url 'add_filter'%}"
     hx-trigger="change"
     hx-target="#job_list"
+    hx-include="[name='remote']"
   />
   <label for="default_checkbox" class="ms-2 text-md text-slate-600"
   >Remote
   </label>
-</div>
+</form>

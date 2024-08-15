@@ -36,5 +36,6 @@ class JetbrainsScraper(Scraper):
     
     def get_vacancies(self):
         jobs = self.filter_tech_jobs(self.scrape())
+        jobs = self.filter_eu_jobs(jobs)
         return self.transform_data(jobs)
 

@@ -1,17 +1,17 @@
-{% load static %} {% load show_locations %}
+{% load static %} {% load show_locations %} {% load custom_filters %}
 {% for job in job_list %}
   <div
     class="listing border-2 rounded bg-white duration-200 hover:bg-slate-100 w-full drop-shadow-md"
   >
     <a
-      href="{% url 'individual_opening' job.company|lower job.slug|lower %}"
+      href="{% url 'individual_opening' job.company|lower|escape_slug job.slug|lower %}"
       class="w-full flex items-center justify-center"
       target="_blank"
     >
       <div class="flex-none w-10 h-10 mx-4">
         <img
           class="h-full w-full"
-          src="{%static 'logos/'%}{{job.company|lower}}.png"
+          src="{%static 'logos/'%}{{job.company|lower|escape_slug}}.png"
           alt="{{ job.company }} logo"
         />
       </div>
