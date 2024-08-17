@@ -1,4 +1,19 @@
-{% for location in current_filters.locations %}
+{% for company in current_filters.companies %}
+  <button
+    class="px-2 py-1 border rounded bg-blue-500 border-gray-300 text-white m-1 relative cursor-default"
+  >
+    {{ company }}
+    <span
+      class="absolute -top-1 -right-2 text-white rounded-full bg-red-500 w-4 h-4 text-center text-xs cursor-pointer hover:bg-red-700"
+      hx-post="{% url 'remove_filter' %}"
+      hx-trigger="click"
+      hx-vals='{"company": "{{company}}"}'
+      hx-target="#job_list"
+    >
+      X
+    </span>
+  </button>
+{% endfor %} {% for location in current_filters.locations %}
   <button
     class="px-2 py-1 border rounded bg-blue-500 border-gray-300 text-white m-1 relative cursor-default"
   >

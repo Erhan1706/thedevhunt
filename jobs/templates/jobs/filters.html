@@ -1,3 +1,4 @@
+{% load static%} {% load custom_filters %}
 <h2 class="text-2xl font-bold p-2">Filters</h2>
 <div
   id="current_filters"
@@ -6,14 +7,8 @@
   class="flex flex-wrap"
 ></div>
 <p class="text-xl p-2">Location</p>
-<div class="flex flex-wrap" id="country_list"
-     hx-get= "{% url 'update_countries' %}"
-     hx-trigger="filterChanged from:body"
->
-  {% include 'jobs/partials/country_filter_partial.html'%}
-</div>
 <form class="flex items-center p-2">
-  <input type="hidden" name="remote" value="off">
+  <input type="hidden" name="remote" value="off" />
   <input
     id="default_checkbox"
     type="checkbox"
@@ -28,3 +23,31 @@
   >Remote
   </label>
 </form>
+<div
+  class="flex flex-wrap"
+  id="country_list"
+  hx-get="{% url 'update_countries' %}"
+  hx-trigger="filterChanged from:body"
+>
+  {% include 'jobs/partials/country_filter_partial.html'%}
+</div>
+
+<p class="text-xl p-2 mt-2">Company</p>
+<div class="flex flex-wrap">
+  {% for company in companies %}
+    <button
+      class="flex items-center m-2 py-2 px-4 rounded-md w-fit shadow-lg ring-1 ring-black ring-opacity-5 hover:bg-slate-100"
+      hx-post="{% url 'add_filter' %}"
+      hx-trigger="click"
+      hx-target="#job_list"
+      hx-vals='{"company": "{{company.company}}"}'
+    >
+      <img
+        src=" {% static 'logos/' %}{{company.company|lower|escape_slug}}.png"
+        alt="logo"
+        class="h-6 w-6"
+      />
+      <span class="mx-2 ml-4 text-gray-600"> {{company.company}} </span>
+    </button>
+  {% endfor %}
+</div>

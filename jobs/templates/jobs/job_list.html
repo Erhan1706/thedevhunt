@@ -16,7 +16,12 @@
         />
       </div>
       <div class="flex flex-col flex-grow py-2 pr-3 my-2">
-        <div class="text-xl font-bold py-1 mb-2">{{ job.title }}</div>
+        <div class="text-xl font-bold py-1">{{ job.title }}</div>
+        <div
+          class="text-sm font-gothic hover:text-red-500 hover:underline shrink w-fit mb-1"
+        >
+          {{ job.company }}
+        </div>
         {% if job.location|length > 0 %}
           <div class="flex items-center mb-1">
             <img
@@ -40,11 +45,6 @@
             </div>
           </div>
         {% endif %}
-        <div
-          class="text-sm font-gothic hover:text-red-500 hover:underline shrink w-fit"
-        >
-          {{ job.company }}
-        </div>
         <div id="detail-container" class="flex flex-wrap mt-3 space-x-4">
           <div
             class="bg-blue-100 ring-2 ring-offset-1 ring-blue-400 rounded-md p-1 text-xs text-blue-700 hover:bg-red-200 duration-100"

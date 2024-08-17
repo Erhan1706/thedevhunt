@@ -1,12 +1,12 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 
-  <div class="bg-white rounded-lg w-3/4 p-10 pb-12">
-    <div class="flex justify-between">
-      <div class="w-3/4 prose max-w-none mr-6">
-        <h1 class="text-3xl font-bold mb-6">{{job.title}}</h1>
+  <div class="bg-white rounded-lg max-w-[95%] lg:max-w-[85%] sm:p-4 md:p-10 pb-12">
+    <div class="flex justify-between flex-col md:items-start md:flex-row">
+      <div class="md:w-3/4 prose max-w-none w-fit !font-sans text-sm md:text-base mr-1 order-2 px-5 md:p-0 md:mr-6 md:order-1">
+        <h1 class="text-2xl sm:text-3xl font-bold inline-block w-fit mb-4">{{job.title}}</h1>
         {{job.description|safe}}
       </div>
-      <div class="w-1/5 border-gray-200 p-5">
+      <div class="md:w-1/5 border-gray-200 self-start p-5 order-1">
         <div class="flex items-center my-2">
           <img
             class="h-4 w-4"
@@ -15,7 +15,7 @@
           />
           <h3 class="font-bold text-xl mx-3 pb-1 font-kanit"> Locations </h3>
         </div>
-        <div class="flex flex-col space-y-1">
+        <div class="flex flex-wrap flex-col space-y-1">
           {% for location in job.location %}
             <div class="text-sm font-gothic shrink w-fit">
               {{ location }}
@@ -31,21 +31,23 @@
           <h3 class="font-bold text-xl mx-3 pb-1 font-kanit"> Company </h3>
         </div>
         <div class="text-sm font-gothic shrink w-fit">{{ job.company }} </div>
-        <div class="flex items-center my-2">
-          <img
-            class="h-4 w-4 my-2"
-            src="{% static 'assets/laptop-solid.svg'%}"
-            alt="laptop icon"
-          />
-          <h3 class="font-bold text-xl mx-3 pb-1 font-kanit"> Skills </h3>
-        </div>
-        <div class="flex flex-col space-y-1">
-          {% for skill in job.technologies %}
-            <div class="text-sm font-gothic shrink w-fit">
-              {{ skill }}
-            </div>
-          {% endfor %}
-        </div>
+        {% if job.technologies|length > 0 %}
+          <div class="flex items-center my-2">
+            <img
+              class="h-4 w-4 my-2"
+              src="{% static 'assets/laptop-solid.svg'%}"
+              alt="laptop icon"
+            />
+            <h3 class="font-bold text-xl mx-3 pb-1 font-kanit"> Skills </h3>
+          </div>
+          <div class="flex flex-col space-y-1">
+            {% for skill in job.technologies %}
+              <div class="text-sm font-gothic shrink w-fit">
+                {{ skill }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
         <div class="flex items-center my-2">
           <img
             class="h-4 w-4 my-2"

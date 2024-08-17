@@ -17,6 +17,6 @@ class Job(models.Model):
       choices=[
           ('FULL_TIME', 'Full-time'),
           ('INTERNSHIP', 'Internship'),
-          ('PART_TIME', 'Part-time'),  # Optional: if you want to include this type
+          ('PART_TIME', 'Part-time'), 
       ],
       default='FULL_TIME')
