@@ -1,0 +1,13 @@
+<button
+  class="flex justify-between w-full bg-slate-200 p-2 rounded-lg box-border drop-shadow-sm font-gothic focus:bg-slate-300"
+  id="show_filter_mobile"
+  hx-get="{% url 'render_filters_mobile' %}?show=True"
+  hx-target="#filter-mobile-container"
+  hx-swap="outerHTML"
+  hx-swap-oob="true"
+>
+  <span class="font-gothic font-bold ml-6"> Filters </span>
+  <span class="mx-4"> &#9660; </span>
+</button>
+
+<div id="filter-mobile-container"></div>

@@ -1,12 +1,28 @@
-{% load static%} {% load custom_filters %}
-<h2 class="text-2xl font-bold p-2">Filters</h2>
+{% load static%} {% load custom_filters %} {% if mobile_display %}
+  <button
+    class="flex justify-between w-full bg-slate-200 p-2 rounded-lg box-border drop-shadow-sm font-gothic focus:bg-slate-300"
+    id="show_filter_mobile"
+    hx-get="{% url 'render_filters_mobile' %}?show=False"
+    hx-swap-oob="true"
+    hx-target="#filter-mobile-container"
+    hx-swap="outerHTML"
+  >
+    <span class="font-gothic font-bold ml-6"> Filters </span>
+    <span class="mx-4"> &#9650; </span>
+  </button>
+{% endif %}
+
+{% if mobile_display %}
+  <div class="bg-white h-fit w-fit p-4 rounded-lg" id="filter-mobile-container" >
+{% endif%}
+<h2 class="text-lg sm:text-2xl font-bold p-2">Filters</h2>
 <div
   id="current_filters"
   hx-get="{% url 'get_filters' %}"
   hx-trigger="load, filterChanged from:body"
   class="flex flex-wrap"
 ></div>
-<p class="text-xl p-2">Location</p>
+<p class="sm:text-xl p-2">Location</p>
 <form class="flex items-center p-2">
   <input type="hidden" name="remote" value="off" />
   <input
@@ -51,3 +67,7 @@
     </button>
   {% endfor %}
 </div>
+
+{% if mobile_display %}
+  </div>
+{% endif%}

@@ -1,5 +1,20 @@
 {% extends "base.html" %} {% load static %} {% block content %}
-  <div class="flex flex-col w-3/5">
+  <div class="flex flex-col lg:min-w-[60%] max-w-[90%]">
+    <div class="lg:hidden p-2">
+      <button
+        class="flex justify-between w-full bg-slate-200 p-2 rounded-lg box-border drop-shadow-sm font-gothic focus:bg-slate-300"
+        id="show_filter_mobile"
+        hx-get="{% url 'render_filters_mobile' %}?show=True"
+        hx-target="#filter-mobile-container"
+        hx-swap="outerHTML"
+      >
+        <span class="font-gothic font-bold ml-6"> Filters </span>
+        <span class="mx-4"> &#9660; </span>
+      </button>
+    </div>
+
+    <div id="filter-mobile-container"></div>
+
     <h1 class="text-3xl bold mt-5">All listings</h1>
     <p class="mt-1">Last Updated: <span class=""> </span></p>
     <div class="grid grid-cols-1 gap-5 w-auto mt-12" id="job_list">
@@ -8,7 +23,9 @@
   </div>
 
 <!--Filters -->
-  <div class="flex flex-col bg-white h-50 w-2/5 p-4 m-4 ml-12 rounded-lg">
+  <div
+    class="hidden lg:flex-col lg:flex bg-white h-fit min-w-[35%] p-4 m-4 ml-12 rounded-lg shrink"
+  >
     {% include 'jobs/filters.html' %}
   </div>
 {% endblock %}

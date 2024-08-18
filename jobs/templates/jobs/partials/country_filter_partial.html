@@ -1,7 +1,7 @@
 {% for country in eu_countries %}
   {% if country not in filtered_locations %}
     <button
-      class="p-2 border rounded border-gray-300 text-slate-500 m-1 hover:bg-blue-500 hover:text-white duration-200"
+      class="p-2 border rounded border-gray-300 text-slate-500 text-sm sm:text-base m-1 hover:bg-blue-500 hover:text-white duration-200"
       hx-post= "{% url 'add_filter' %}"
       hx-trigger="click"
       hx-target="#job_list"
@@ -11,7 +11,7 @@
     </button>
   {% else %}
     <button
-      class="p-2 border rounded bg-slate-100 border-gray-200 text-gray-500 m-1 cursor-default pointer-events-none"
+      class="p-2 border rounded bg-slate-100 border-gray-200 text-gray-500 text-sm sm:text-base m-1 cursor-default pointer-events-none"
     >
       {{country}}
     </button>
@@ -20,7 +20,7 @@
 <div id="country_placeholder">
   {% if not show_all_countries %}
     <button
-      class="p-2 border rounded border-gray-300 text-white m-1 bg-slate-500 hover:bg-blue-500 hover:text-white duration-200"
+      class="p-2 border rounded border-gray-300 text-sm sm:text-base text-white m-1 bg-slate-500 hover:bg-blue-500 hover:text-white duration-200"
       hx-get="{% url 'show_all_countries' %}?show_all=True"
       hx-trigger="click"
       hx-target="#country_placeholder"
@@ -30,7 +30,7 @@
     </button>
   {% else %}
     <button
-      class="p-2 border rounded border-gray-300 text-white m-1 bg-slate-500 hover:bg-blue-500 hover:text-white duration-200"
+      class="p-2 border rounded border-gray-300 text-white text-sm sm:text-base m-1 bg-slate-500 hover:bg-blue-500 hover:text-white duration-200"
       hx-get="{% url 'show_all_countries' %}?show_all=False"
       hx-trigger="click"
       hx-target="#country_list"

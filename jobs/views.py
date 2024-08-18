@@ -164,3 +164,14 @@ def remove_filter(request):
 @require_http_methods(["GET"])
 def get_filters(request):
     return render(request, 'jobs/partials/current_filters_partial.html', {"current_filters": request.session.get('filters')})
+
+@require_http_methods(["GET"])
+def render_filters_mobile(request):
+    filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': [], 'companies':[]})
+    companies = Job.objects.values('company').distinct().order_by('company')
+    show = request.GET.get('show')
+    if show == "True":
+        return render(request, 'jobs/filters.html', {"current_filters": filters, "filtered_locations": filters['locations'],
+                                "eu_countries": eu_countries[:12], "companies": companies, "mobile_display": True})
+    else:
+        return render(request, 'jobs/partials/mobile_filter_button_partial.html', {})

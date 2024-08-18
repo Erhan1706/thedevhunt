@@ -8,7 +8,7 @@
       class="w-full flex items-center justify-center"
       target="_blank"
     >
-      <div class="flex-none w-10 h-10 mx-4">
+      <div class="flex-none w-10 h-10 mx-4 self-start mt-6 sm:mt-0 sm:self-auto">
         <img
           class="h-full w-full"
           src="{%static 'logos/'%}{{job.company|lower|escape_slug}}.png"
@@ -16,7 +16,7 @@
         />
       </div>
       <div class="flex flex-col flex-grow py-2 pr-3 my-2">
-        <div class="text-xl font-bold py-1">{{ job.title }}</div>
+        <div class="sm:text-xl font-bold py-1">{{ job.title }}</div>
         <div
           class="text-sm font-gothic hover:text-red-500 hover:underline shrink w-fit mb-1"
         >
@@ -45,22 +45,22 @@
             </div>
           </div>
         {% endif %}
-        <div id="detail-container" class="flex flex-wrap mt-3 space-x-4">
+        <div id="detail-container" class="flex flex-wrap m-3 gap-4 ">
           <div
-            class="bg-blue-100 ring-2 ring-offset-1 ring-blue-400 rounded-md p-1 text-xs text-blue-700 hover:bg-red-200 duration-100"
+            class="bg-blue-100 ring-2 sm:ring-offset-1 ring-blue-400 rounded-md p-1 text-xs text-blue-700 hover:bg-red-200 duration-100"
           >
             {{job.role}}
           </div>
-          <div class="flex flex-wrap space-x-4">
+          <div class="flex flex-wrap gap-4">
             {% for tech in job.technologies %}
               <div
-                class="bg-red-100 ring-2 ring-offset-1 ring-red-400 rounded-md py-1 px-2.5 text-xs text-red-700 hover:bg-blue-200 duration-100"
+                class="bg-red-100 ring-2 sm:ring-offset-1 ring-red-400 rounded-md py-1 px-2.5 text-xs text-red-700 hover:bg-blue-200 duration-100"
               >
                 {{tech}}
               </div>
             {% endfor%} {% if job.remote %}
               <div
-                class="bg-green-100 ring-2 ring-offset-1 ring-green-400 rounded-md p-1 text-xs text-green-700 hover:bg-red-200 duration-100"
+                class="bg-green-100 ring-2 sm:ring-offset-1 ring-green-400 rounded-md p-1 text-xs text-green-700 hover:bg-red-200 duration-100"
               >
                 Remote
               </div>
