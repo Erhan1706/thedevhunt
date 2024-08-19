@@ -1,6 +1,11 @@
 {% for location in locations %}
   <div
     class="text-xs text-slate-500 w-auto font-gothic border bg-gray-100 rounded-md py-0.5 px-1 m-1 hover:bg-sky-100"
+    hx-on:click="event.stopPropagation(); event.preventDefault(); document.getElementById('page_title').scrollIntoView({behavior: 'smooth'});"
+    hx-post="{% url 'add_filter' %}"
+    hx-trigger="click"
+    hx-target="#job_list"
+    hx-vals='{"country": "{{location}}"}'
   >
     {{ location }}
   </div>

@@ -98,10 +98,10 @@ def add_filter(request):
             query_set |= Q(remote=True)
         if remote == 'off':
             return remove_filter(request)
-    elif location:
+    elif location and not location in filters['locations']:
         query_set |= Q(location__icontains=location)
         filters['locations'].append(location)
-    elif company:
+    elif company and not company in filters['companies'] :
         query_set |= Q(company__icontains=company)
         filters['companies'].append(company)
 
@@ -175,3 +175,14 @@ def render_filters_mobile(request):
                                 "eu_countries": eu_countries[:12], "companies": companies, "mobile_display": True})
     else:
         return render(request, 'jobs/partials/mobile_filter_button_partial.html', {})
+
+@require_http_methods(["POST"])
+def clear_filters(request):
+    request.session['filters'] = {'locations': [], 'roles': [], 'technologies': [], 'companies': []}
+    jobs = Job.objects.all()
+    page_obj = get_page_obj(jobs)
+
+    template = loader.get_template('jobs/job_list.html')
+    response = HttpResponse(template.render({"page_obj": page_obj, "current_filters": request.session.get('filters')}, request))
+    response.headers["HX-Trigger"] = "filterChanged"
+    return response

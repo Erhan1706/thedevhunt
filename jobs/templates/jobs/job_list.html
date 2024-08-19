@@ -19,6 +19,11 @@
         <div class="sm:text-xl font-bold py-1">{{ job.title }}</div>
         <div
           class="text-sm font-gothic hover:text-red-500 hover:underline shrink w-fit mb-1"
+          hx-on:click="event.stopPropagation(); event.preventDefault(); document.getElementById('page_title').scrollIntoView({behavior: 'smooth'});"
+          hx-post="{% url 'add_filter' %}"
+          hx-trigger="click"
+          hx-target="#job_list"
+          hx-vals='{"company": "{{job.company}}"}'~
         >
           {{ job.company }}
         </div>
@@ -81,7 +86,9 @@
           src="{% static 'assets/chevron-left-solid.svg'%}"
           class="w-4 h-4 cursor-pointer"
           hx-get="{% url 'fetch_page'%}?page={{page_obj.previous_page_number}}"
-          hx-target="#job_list"/>
+          hx-target="#job_list"
+          hx-on:click="document.getElementById('page_title').scrollIntoView({behavior: 'auto'});"
+        />
       {% endif %}
 
       <span class="current mx-2 text-md font-gothic">
@@ -93,7 +100,9 @@
           src="{% static 'assets/chevron-right-solid.svg'%}"
           class="w-4 h-4 cursor-pointer"
           hx-get="{% url 'fetch_page'%}?page={{page_obj.next_page_number}}"
-          hx-target="#job_list"/>
+          hx-target="#job_list"
+          hx-on:click="document.getElementById('page_title').scrollIntoView({behavior: 'auto'});"
+        />
       {% endif %}
     </div>
   </div>

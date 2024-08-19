@@ -29,3 +29,15 @@
     </span>
   </button>
 {% endfor %}
+
+{% if current_filters.locations|length > 0 or current_filters.companies|length > 0 or current_filters.roles|length > 0 or current_filters.remote %}
+  <div class="text-red-500 cursor-pointer mx-2"
+       id="clear_all"
+       hx-swap-oob="true"
+       hx-post="{% url 'clear_all_filters' %}"
+       hx-target="#job_list">
+    Clear all
+  </div>
+{% else %}
+  <div class="text-red-500 cursor-pointer mx-2" id="clear_all" hx-swap-oob="true"></div>
+{% endif %}

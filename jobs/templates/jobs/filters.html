@@ -13,9 +13,12 @@
 {% endif %}
 
 {% if mobile_display %}
-  <div class="bg-white h-fit w-fit p-4 rounded-lg" id="filter-mobile-container" >
+  <div class="bg-white h-fit w-fit p-4 rounded-lg lg:hidden" id="filter-mobile-container" >
 {% endif%}
-<h2 class="text-lg sm:text-2xl font-bold p-2">Filters</h2>
+<div class="flex items-center justify-between">
+  <h2 class="text-lg sm:text-2xl font-bold p-2">Filters</h2>
+  <div class="text-red-500 cursor-pointer mx-2" id="clear_all"></div>
+</div>
 <div
   id="current_filters"
   hx-get="{% url 'get_filters' %}"
