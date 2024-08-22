@@ -3,8 +3,6 @@ import requests
 from requests.models import Response
 import json
 from .scraper import Scraper
-from jobs.models import Job
-
 
 class JetbrainsScraper(Scraper):
 
@@ -12,6 +10,9 @@ class JetbrainsScraper(Scraper):
     
     def scrape(self):
         page_source: Response =  requests.get(self.URL)
+        if page_source.status_code != 200:
+            raise Exception(f"Request for {self.URL} failed with status code: {page_source.status_code}")
+
         soup: BeautifulSoup = BeautifulSoup(page_source.text, "lxml")
 
         def find_vacancies_script(tag):

@@ -1,6 +1,5 @@
 from django.core.management.base import BaseCommand
 from jobs.models import Job
-from django.urls import reverse
 from api.scrapers.scraper_factory import ScraperFactory
 
 class Command(BaseCommand):
@@ -8,4 +7,4 @@ class Command(BaseCommand):
 
   def handle(self, *args, **options):
 
-    ScraperFactory.get_scraper("booking").get_vacancies()
+    ScraperFactory.get_scraper("accenture").get_vacancies()

@@ -35,7 +35,7 @@ class BookingScraper(Scraper):
       except ValueError:
         print("Response content for Booking.com is not valid JSON")
     else:
-      print(f"Request for {self.url} failed with status code: {response.status_code}")
+      raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
 
 
   def description_to_html(self, url):
@@ -73,7 +73,7 @@ class BookingScraper(Scraper):
         location= [job['full_location']],
         link_to_apply= f"https://jobs.booking.com/booking/jobs/{job['slug']}?lang=en-us",
         created_at= job['create_date'],
-        employment_type= 'FULL-TIME',
+        employment_type= 'FULL_TIME',
         remote = True if 'remote' in job['location_name'].lower() or 'remote' in job['street_address'].lower() else False
       )
       description = self.description_to_html(listing.link_to_apply)
@@ -96,4 +96,4 @@ class BookingScraper(Scraper):
     jobs = self.transform_data(filtered_jobs)
     for job in jobs:
       job.save()
-    print('Success')
+    print('Booking.com jobs saved')

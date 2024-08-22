@@ -40,7 +40,7 @@ def fetch_page(request):
     return render(request, 'jobs/job_list.html', {"page_obj": page_obj})
 
 def get_page_obj(jobs, page_num=1):
-    paginator = Paginator(jobs, 25)
+    paginator = Paginator(jobs, 15)
     return paginator.get_page(page_num)
 
 @require_http_methods(["GET"])
