@@ -71,12 +71,9 @@ class AccentureScraper(Scraper):
     return [job for job in jobs if any(keyword in job['skill'].lower() for keyword in tech_keywords)]
   
   def get_vacancies(self):
-    #data = self.scrape()
-    #jobs = self.filter_tech_jobs(data['data'])
-    #jobs = self.transform_data(jobs)
-    #for job in jobs:
-    #  job.update()
-    #print('Accenture jobs saved')
-    for job in Job.objects.all().filter(company='Accenture'):
-      job.location = [job.location]
-      job.save()
+    data = self.scrape()
+    jobs = self.filter_tech_jobs(data['data'])
+    jobs = self.transform_data(jobs)
+    for job in jobs:
+      job.update()
+    print('Accenture jobs saved')

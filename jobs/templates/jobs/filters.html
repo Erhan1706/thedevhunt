@@ -52,23 +52,13 @@
 </div>
 
 <p class="text-xl p-2 mt-2">Company</p>
-<div class="flex flex-wrap">
-  {% for company in companies %}
-    <button
-      class="flex items-center m-2 py-2 px-4 rounded-md w-fit shadow-lg ring-1 ring-black ring-opacity-5 hover:bg-slate-100"
-      hx-post="{% url 'add_filter' %}"
-      hx-trigger="click"
-      hx-target="#job_list"
-      hx-vals='{"company": "{{company.company}}"}'
-    >
-      <img
-        src=" {% static 'logos/' %}{{company.company|lower|escape_slug}}.png"
-        alt="logo"
-        class="h-6 w-6"
-      />
-      <span class="mx-2 ml-4 text-gray-600"> {{company.company}} </span>
-    </button>
-  {% endfor %}
+<div
+  class="flex flex-wrap"
+  id="company_list"
+  hx-get="{% url 'update_companies' %}"
+  hx-trigger="filterChanged from:body"
+>
+  {% include 'jobs/partials/company_filter_partial.html'%}
 </div>
 
 {% if mobile_display %}

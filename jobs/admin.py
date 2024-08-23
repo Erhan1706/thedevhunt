@@ -31,4 +31,4 @@ class CountryListFilter(admin.SimpleListFilter):
 @admin.register(Job)
 class JobAdmin(admin.ModelAdmin):
   date_hierarchy = 'created_at'
-  list_filter = ['company', 'employment_type', 'remote', CountryListFilter]
+  list_filter = ['company', 'employment_type', 'remote', CountryListFilter, 'role']

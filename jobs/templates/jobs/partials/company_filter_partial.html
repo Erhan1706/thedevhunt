@@ -1,0 +1,19 @@
+{% load static %} {% load custom_filters %}
+{% for company in companies %}
+  {% if company.company not in filtered_companies%}
+    <button
+      class="flex items-center m-2 py-2 px-4 rounded-md w-fit shadow-lg ring-1 ring-black ring-opacity-5 hover:bg-slate-100"
+      hx-post="{% url 'add_filter' %}"
+      hx-trigger="click"
+      hx-target="#job_list"
+      hx-vals='{"company": "{{company.company}}"}'
+    >
+      <img
+        src=" {% static 'logos/' %}{{company.company|lower|escape_slug}}.png"
+        alt="logo"
+        class="h-6 w-6"
+      />
+      <span class="mx-2 ml-4 text-gray-600"> {{company.company}} </span>
+    </button>
+  {% endif %}
+{% endfor %}
