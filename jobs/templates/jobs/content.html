@@ -15,8 +15,9 @@
 
     <div id="filter-mobile-container" class="lg:hidden"></div>
 
-    <h1 class="text-3xl bold mt-5" id="page_title">All listings</h1>
-    <p class="mt-1">Last Updated: <span class=""> </span></p>
+    <h1 class="text-3xl font-bold mt-5 font-gothic" id="page_title">All listings</h1>
+    <!-- TO DO: call api to get live last update time -->
+    <p class="mt-1">Last Updated: <span class="text-lg text-red-500"> Today </span></p>
     <div class="grid grid-cols-1 gap-5 w-auto mt-12" id="job_list">
       {% include 'jobs/job_list.html' %}
     </div>

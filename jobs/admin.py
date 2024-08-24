@@ -13,6 +13,7 @@ class CountryListFilter(admin.SimpleListFilter):
       ('GR', 'Germany'),
       ('FR', 'France'),
       ('CZ', 'Czech Republic'),
+      ('PT', 'Portugal'),
     ]
   
   def queryset(self, request, queryset):
@@ -26,6 +27,8 @@ class CountryListFilter(admin.SimpleListFilter):
       return queryset.filter(location__icontains='France')
     elif self.value() == 'CZ':
       return queryset.filter(location__icontains='Czech Republic')
+    elif self.value() == 'PT':
+      return queryset.filter(location__icontains='Portugal')
     # can add more as needed
 
 @admin.register(Job)

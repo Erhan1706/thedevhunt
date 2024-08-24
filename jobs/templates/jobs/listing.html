@@ -1,10 +1,10 @@
-{% extends "base.html" %} {% load static %} {% block content %}
+{% extends "base.html" %} {% load static %} {% load custom_filters %} {% block content %}
 
   <div class="bg-white rounded-lg max-w-[95%] lg:max-w-[85%] sm:p-4 md:p-10 pb-12">
     <div class="flex justify-between flex-col md:items-start md:flex-row">
       <div class="md:w-3/4 prose max-w-none w-fit !font-sans text-sm md:text-base mr-1 order-2 px-5 md:p-0 md:mr-6 md:order-1">
         <h1 class="text-2xl sm:text-3xl font-bold inline-block w-fit mb-4">{{job.title}}</h1>
-        {{job.description|safe}}
+        {{job.description|clean_html}}
       </div>
       <div class="md:w-1/5 border-gray-200 self-start p-5 order-1">
         <div class="flex items-center my-2">

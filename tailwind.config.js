@@ -7,6 +7,9 @@ module.exports = {
         gothic: ["Century Gothic", "sans-serif"],
         kanit: ["Kanit-Bold", "sans-serif"],
       },
+      fontSize: {
+        xxs: ['0.625rem', '0.25rem']
+      },
     },
   },
   plugins: [require("@tailwindcss/typography")],

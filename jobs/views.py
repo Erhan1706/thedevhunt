@@ -19,7 +19,7 @@ eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria",
 @require_http_methods(["GET"])
 def load_main_page(request):
     filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': [], 'companies':[]})
-    query_set = process_filters(filters, Q())
+    query_set = process_filters(filters)
     jobs = Job.objects.filter(query_set)
 
     #t = Job.objects.values('role').distinct()
@@ -33,7 +33,7 @@ def load_main_page(request):
 @require_http_methods(["GET"])
 def fetch_page(request):
     filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': [], 'companies': []})
-    query_set = process_filters(filters, Q())
+    query_set = process_filters(filters)
     jobs = Job.objects.filter(query_set)
 
     page_num = request.GET.get("page")
@@ -109,7 +109,7 @@ def add_filter(request):
         #query_set |= Q(company__icontains=company)
         filters['companies'].append(company)
 
-    query_set = process_filters(filters, Q())
+    query_set = process_filters(filters)
     jobs = Job.objects.filter(query_set)
     page_obj = get_page_obj(jobs)
 
@@ -119,29 +119,29 @@ def add_filter(request):
     response.headers["HX-Trigger"] = "filterChanged"
     return response 
 
-def process_filters(filters, query_set):
-    location_query = Q()
-    role_query = Q()
-    tech_query = Q()
-    company_query = Q()
-    remote_query = Q()
-    for key in filters.keys():
-        if key == 'locations':
-            for location in filters[key]:
-                location_query |= Q(location__icontains=location)
-        elif key == 'remote' and filters[key]:
-            remote_query = Q(remote=True)
-        elif key == 'roles':
-            for role in filters[key]:
-                role_query |= Q(role__icontains=role)
-        elif key == 'technologies':
-            for tech in filters[key]:
-                tech_query |= Q(technologies__icontains=tech)
-        elif key == 'companies':
-            for company in filters[key]:
-                company_query |= Q(company__icontains=company)
-                        
-    return location_query & role_query & tech_query & company_query & remote_query
+def process_filters(filters):
+    queries = {
+        'locations': Q(),
+        'roles': Q(),
+        'technologies': Q(),
+        'companies': Q(),
+    }
+    query_set = Q()
+    for key, values in filters.items():
+        if key=='locations' and values:
+            queries[key] = Q(**{"location__icontains":value for value in values})
+        elif key=='roles' and values:
+            queries[key] = Q(**{"role__icontains": value for value in values})
+        elif key=='technologies' and values:
+            queries[key] = Q(**{"technologies__icontains": value for value in values})
+        elif key=='companies' and values:
+            queries[key] = Q(**{"company__icontains": value for value in values})
+        elif key == 'remote' and values:
+            queries['remote'] = Q(remote=True)
+
+    for query in queries.values():
+        query_set &= query
+    return query_set
 
 @require_http_methods(["POST"])
 def remove_filter(request):
@@ -160,7 +160,7 @@ def remove_filter(request):
     elif company:
         filters['companies'].remove(company)
 
-    query_set = process_filters(filters, Q())
+    query_set = process_filters(filters)
     jobs = Job.objects.filter(query_set)
     request.session['filters'] = filters
     page_obj = get_page_obj(jobs)

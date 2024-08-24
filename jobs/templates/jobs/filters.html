@@ -37,6 +37,9 @@
     hx-trigger="change"
     hx-target="#job_list"
     hx-include="[name='remote']"
+    {% if current_filters.remote %}
+      checked
+    {% endif %}
   />
   <label for="default_checkbox" class="ms-2 text-md text-slate-600"
   >Remote

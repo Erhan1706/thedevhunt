@@ -42,7 +42,7 @@
                   hx-swap="outerHTML"
                   hx-trigger="click"
                   hx-on:click="event.stopPropagation(); event.preventDefault();"
-                  class="show-more text-xs bg-red-50 text-red-500 w-auto font-gothic border ring-1 ring-red-500 rounded-md py-0.5 px-1 m-1 hover:bg-red-100"
+                  class="show-more text-xs bg-red-50 text-red-500 w-auto font-gothic h-min border ring-1 ring-red-500 rounded-md py-0.5 px-1 m-1 hover:bg-red-100"
                 >
                   Show more
                 </div>
@@ -50,22 +50,33 @@
             </div>
           </div>
         {% endif %}
-        <div id="detail-container" class="flex flex-wrap m-3 gap-4 ">
+        <div id="detail-container" class="flex flex-wrap my-2 gap-4">
           <div
-            class="bg-blue-100 ring-2 sm:ring-offset-1 ring-blue-400 rounded-md p-1 text-xs text-blue-700 hover:bg-red-200 duration-100"
+            class="h-min bg-purple-100 ring-2 sm:ring-offset-1 px-2 py-[2px] ring-purple-400 rounded-full text-xs font-semibold stroke-orange-500 text-purple-600 hover:bg-purple-200 duration-100"
           >
-            {{job.role}}
+            &#9679 {{job.role}}
           </div>
           <div class="flex flex-wrap gap-4">
-            {% for tech in job.technologies %}
+            {% if job.technologies|length > 3 %}
+              {% for tech in job.technologies|slice:":3" %}
+                <div
+                  class="h-min bg-blue-100 ring-2 sm:ring-offset-1 ring-blue-400 rounded-full py-[2px] px-2 text-xs text-blue-700 duration-100 cursor-default"
+                >
+                  {{tech}}
+                </div>
+              {% endfor%}
+            {% else %}
+              {% for tech in job.technologies %}
+                <div
+                  class="h-min bg-blue-100 ring-2 sm:ring-offset-1 ring-blue-400 rounded-full py-[2px] px-2 text-xs text-blue-700 duration-100 cursor-default"
+                >
+                  {{tech}}
+                </div>
+              {% endfor%}
+            {% endif %}
+            {% if job.remote %}
               <div
-                class="bg-red-100 ring-2 sm:ring-offset-1 ring-red-400 rounded-md py-1 px-2.5 text-xs text-red-700 hover:bg-blue-200 duration-100"
-              >
-                {{tech}}
-              </div>
-            {% endfor%} {% if job.remote %}
-              <div
-                class="bg-green-100 ring-2 sm:ring-offset-1 ring-green-400 rounded-md p-1 text-xs text-green-700 hover:bg-red-200 duration-100"
+                class="h-min bg-green-100 ring-2 sm:ring-offset-1 ring-green-400 rounded-full py-[2px] px-2 text-xs text-green-700 hover:bg-green-200 duration-100"
               >
                 Remote
               </div>
