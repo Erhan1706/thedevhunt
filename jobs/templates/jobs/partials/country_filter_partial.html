@@ -1,7 +1,7 @@
 {% for country in eu_countries %}
   {% if country not in filtered_locations %}
     <button
-      class="p-2 border rounded border-gray-300 text-slate-500 text-sm sm:text-base m-1 hover:bg-blue-500 hover:text-white duration-200"
+      class="p-2 border rounded border-gray-300 text-slate-500 text-sm sm:text-base m-1 hover:bg-slate-500 hover:text-white duration-200"
       hx-post= "{% url 'add_filter' %}"
       hx-trigger="click"
       hx-target="#job_list"

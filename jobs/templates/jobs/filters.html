@@ -64,6 +64,16 @@
   {% include 'jobs/partials/company_filter_partial.html'%}
 </div>
 
+<p class="text-xl p-2 mt-2">Category</p>
+<div
+  class="flex flex-wrap gap-x-1"
+  id="category_list"
+  hx-get="{% url 'update_roles' %}"
+  hx-trigger="filterChanged from:body"
+>
+  {% include 'jobs/partials/category_filter_partial.html'%}
+</div>
+
 {% if mobile_display %}
   </div>
 {% endif%}

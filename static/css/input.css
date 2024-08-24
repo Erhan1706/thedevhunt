@@ -9,3 +9,21 @@
     src: url(../fonts/Kanit-SemiBold.ttf);
   }
 }
+
+@layer components {
+  .btn-blue {
+    @apply border-blue-500 text-blue-700 hover:bg-blue-500
+  }
+  .btn-purple {
+    @apply border-purple-500 text-purple-700 hover:bg-purple-500
+  }
+  .btn-green {
+    @apply border-green-500 text-green-700 hover:bg-green-500
+  }
+  .btn-red {
+    @apply border-red-500 text-red-700 hover:bg-red-500
+  }
+  .btn-orange {
+    @apply border-orange-500 text-orange-700 hover:bg-orange-500
+  }
+}

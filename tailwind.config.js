@@ -8,7 +8,7 @@ module.exports = {
         kanit: ["Kanit-Bold", "sans-serif"],
       },
       fontSize: {
-        xxs: ['0.625rem', '0.25rem']
+        xxs: ['0.625rem', '0.625rem']
       },
     },
   },
