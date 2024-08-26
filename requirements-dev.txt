@@ -4,7 +4,10 @@ requests==2.32.3
 requests-html==0.10.0
 selenium==4.23.1
 Django==4.2.14
+django-debug-toolbar==4.4.6
+django-browser-reload==1.13.0
 djangorestframework==3.15.2
 djhtml==3.0.6
+pre-commit==3.5.0
 lxml-html-clean==0.2.0
 python-dotenv==1.0.1

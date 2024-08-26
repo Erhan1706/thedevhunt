@@ -20,6 +20,7 @@ categories = ["Software Development", "Data & AI", "Hardware", "Cybersecurity", 
 @require_http_methods(["GET"])
 def load_main_page(request):
     filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': [], 'companies':[]})
+    request.session['show_all_countries'] = False
     query_set = process_filters(filters)
     jobs = Job.objects.filter(query_set).order_by('-created_at')
 
@@ -93,7 +94,6 @@ def update_company_list(request):
 @require_http_methods(["GET"])
 def update_role_list(request):
     filters = request.session.get('filters', {'locations': [], 'roles': [], 'technologies': [], 'companies': []})
-    roles = Job.objects.values('role').distinct().order_by('role')
     return render(request, 'jobs/partials/category_filter_partial.html', {"categories": categories,
                   "current_filters": filters})
 
@@ -118,7 +118,7 @@ def add_filter(request):
         filters['roles'].append(role)
 
     query_set = process_filters(filters)
-    jobs = Job.objects.filter(query_set)
+    jobs = Job.objects.filter(query_set).order_by('-created_at')
     page_obj = get_page_obj(jobs)
 
     request.session['filters'] = filters
@@ -194,7 +194,7 @@ def remove_filter(request):
         filters['roles'].remove(role)
 
     query_set = process_filters(filters)
-    jobs = Job.objects.filter(query_set)
+    jobs = Job.objects.filter(query_set).order_by('-created_at')
     request.session['filters'] = filters
     page_obj = get_page_obj(jobs)
 
@@ -213,16 +213,20 @@ def render_filters_mobile(request):
     filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': [], 'companies':[]})
     companies = Job.objects.values('company').distinct().order_by('company')
     show = request.GET.get('show')
+    request.session['show_all_countries'] = False
+
     if show == "True":
         return render(request, 'jobs/filters.html', {"current_filters": filters, "filtered_locations": filters['locations'],
-                                "eu_countries": eu_countries[:12], "companies": companies, "mobile_display": True})
+                                "eu_countries": eu_countries[:12], "companies": companies, "mobile_display": True, 
+                                "categories": categories, "companies": companies, "filtered_companies": filters['companies'],
+                                "show_all_countries": False})
     else:
         return render(request, 'jobs/partials/mobile_filter_button_partial.html', {})
 
 @require_http_methods(["POST"])
 def clear_filters(request):
     request.session['filters'] = {'locations': [], 'roles': [], 'technologies': [], 'companies': []}
-    jobs = Job.objects.all()
+    jobs = Job.objects.all().order_by('-created_at')
     page_obj = get_page_obj(jobs)
 
     template = loader.get_template('jobs/job_list.html')

@@ -2,6 +2,7 @@ from django import template
 from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 from bs4 import BeautifulSoup
+from datetime import datetime, timezone
 
 register = template.Library()
 
@@ -17,3 +18,18 @@ def clean_html(value):
     """
     soup = BeautifulSoup(value, 'html.parser')
     return mark_safe(str(soup))
+
+@register.filter
+def days_since_posted(date):
+    """
+    Returns the number of days since the date passed in.
+    """
+    if not date:
+        return ''
+    b = datetime.now()
+    delta = datetime.now(timezone.utc) - date
+    if delta.days > 0:
+        return f'{delta.days}d ago'
+    else:
+        hours = delta.seconds // 3600 
+        return f'{hours}h ago'
