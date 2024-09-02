@@ -25,4 +25,7 @@
   .btn-orange {
     @apply border-orange-500 text-orange-700 hover:bg-orange-500;
   }
+  [class*="booking-com"] p {
+    @apply my-0;
+  }
 }

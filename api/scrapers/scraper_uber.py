@@ -215,6 +215,5 @@ class UberScraper(Scraper):
   def get_vacancies(self):
     data = self.scrape()
     jobs = self.transform_data(data['data']['results'])
-    for job in jobs:
-      job.save()
+    self.update_db(jobs)
     print('Uber jobs saved')

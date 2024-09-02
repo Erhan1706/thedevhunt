@@ -11,6 +11,11 @@ register = template.Library()
 def escape_slug(value):
   return value.replace(".","_")
 
+@register.filter
+@stringfilter
+def escape_css_class(value):
+    return value.replace(".", "-")
+
 @register.filter(name='clean_html')
 def clean_html(value):
     """

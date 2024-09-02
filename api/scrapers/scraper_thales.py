@@ -125,8 +125,7 @@ class ThalesScraper(Scraper):
         
         # Print page source for debugging
         print(f"Page source for {url}:")
-        #print(driver.page_source)
-        
+
         return description.get_attribute('outerHTML')
     except Exception as e:
         print(f"Error while fetching description for {url}: {e}")
@@ -160,6 +159,5 @@ class ThalesScraper(Scraper):
     data = self.scrape()
     jobs = data['refineSearch']['data']['jobs']
     result = self.transform_data(jobs)
-    for job in result:
-      job.save()
+    self.update_db(result)
     print('Thales jobs saved')
