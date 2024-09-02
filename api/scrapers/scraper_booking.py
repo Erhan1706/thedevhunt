@@ -76,9 +76,9 @@ class BookingScraper(Scraper):
         employment_type= 'FULL_TIME',
         remote = True if 'remote' in job['location_name'].lower() or 'remote' in job['street_address'].lower() else False
       )
-      description = self.description_to_html(listing.link_to_apply)
-      if not description: continue
-      listing.description = description
+      #description = self.description_to_html(listing.link_to_apply)
+      #if not description: continue
+      #listing.description = description
       result.append(listing)
 
     return result
@@ -88,12 +88,21 @@ class BookingScraper(Scraper):
     job_list = jobs['jobs']
     return [job for job in job_list if any(keyword in job['data']['category'][0].lower() for keyword in tech_keywords)]
   
+  def filter_eu_jobs(self, jobs, location_key):
+    eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
+                    "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
+                    "Cyprus", "Estonia", "Finland", "Greece", "Hungary", "Italy", "Bulgaria", "Switzerland", "Turkey",
+                    "Iceland", "Latvia", "Lithuania", "Luxembourg", "Malta", "Russia", "Serbia", "Slovakia", 
+                    "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
+                    "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
+    
+    return [job for job in jobs if any(country in job[location_key] for country in eu_countries)]
+  
   def get_vacancies(self):
     data = self.scrape()
     jobs = self.filter_tech_jobs(data)
     jobs = [job['data'] for job in jobs]
-    filtered_jobs = self.filter_eu_jobs(jobs, location_key='country')
+    filtered_jobs = self.filter_eu_jobs(jobs, 'country')
     jobs = self.transform_data(filtered_jobs)
-    for job in jobs:
-      job.save()
+    self.update_db(jobs)
     print('Booking.com jobs saved')

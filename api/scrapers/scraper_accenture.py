@@ -5,6 +5,7 @@ from .scraper import Scraper
 from jobs.models import Job
 from requests_html import HTMLSession
 from time import sleep
+from datetime import datetime, timezone
 
 
 class AccentureScraper(Scraper):
@@ -41,8 +42,7 @@ class AccentureScraper(Scraper):
     response = requests.request("POST", self.url, headers=self.headers, data=self.payload)
     if response.status_code == 200:
       try:
-        data = response.json()
-        return data
+        return response.json()
       except ValueError:
         print("Response content for Accenture is not valid JSON")
     else:
@@ -56,11 +56,12 @@ class AccentureScraper(Scraper):
         slug= job['jobId'],
         role= job['skill'],
         company= "Accenture",
-        location= f"{job['jobCityState'][0]}, {job['country']}",
+        location= [f"{job['jobCityState'][0]}, {job['country']}"],
         link_to_apply= job['jobDetailUrl'],
         employment_type= 'FULL_TIME' if job['employeeType'] == 'Full-time' else 'INTERNSHIP',
         remote = False,
-        description = job['jobDescription']
+        description = job['jobDescription'],
+        created_at= datetime.fromtimestamp(job['postedDate'] / 1000, timezone.utc)
       )
       result.append(listing)
 
@@ -75,5 +76,5 @@ class AccentureScraper(Scraper):
     jobs = self.filter_tech_jobs(data['data'])
     jobs = self.transform_data(jobs)
     for job in jobs:
-      job.update()
+      job.save()
     print('Accenture jobs saved')

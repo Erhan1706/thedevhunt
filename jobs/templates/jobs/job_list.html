@@ -86,7 +86,7 @@
       </div>
     </a>
     {% if job.created_at%}
-      <div class="absolute text-sm text-gray-500 top-5 right-5"> {{job.created_at|days_since_posted}} </div>
+      <div class="hidden absolute md:block text-sm text-gray-500 top-5 right-5"> {{job.created_at|days_since_posted}} </div>
     {% endif %}
   </div>
 {% empty %}

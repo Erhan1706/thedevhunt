@@ -3,6 +3,7 @@ import requests
 from requests.models import Response
 import json
 from .scraper import Scraper
+from jobs.models import Job
 
 class JetbrainsScraper(Scraper):
 
@@ -24,19 +25,44 @@ class JetbrainsScraper(Scraper):
         return json_vacancies
     
     def transform_data(self, jobs) -> list:
+        result = []
         for job in jobs:
-            if len(job["role"]) > 2: print(f"{job['role']}")
-            job["role"] = job["role"][0]
-            job["remote"] = any("remote" in loc.lower() for loc in job["location"])
-            job["company"] = "Jetbrains"
-            del job["team"]
-            del job["language"]
-            if "technologies" not in job: job["technologies"] = []
-            job["link_to_apply"] = f"https://www.jetbrains.com/careers/jobs/{job['slug']}/"
-        return jobs
+            listing = Job(
+                role = job["role"][0],
+                company = "Jetbrains",
+                title = job["title"],
+                location = job["location"],
+                slug = job["slug"],
+                link_to_apply = f"https://www.jetbrains.com/careers/jobs/{job['slug']}/",
+                remote = any("remote" in loc.lower() for loc in job["location"]),
+                technologies = job["technologies"] if "technologies" in job else [],
+                employment_type = 'FULL_TIME',
+                description = job["description"]
+            )
+            result.append(listing)
+        return result
     
+    def filter_eu_jobs(self, jobs, location_key):
+        eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
+                        "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
+                        "Cyprus", "Estonia", "Finland", "Greece", "Hungary", "Italy", "Bulgaria", "Switzerland", "Turkey",
+                        "Iceland", "Latvia", "Lithuania", "Luxembourg", "Malta", "Russia", "Serbia", "Slovakia", 
+                        "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
+                        "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
+        filtered_jobs = []
+        for job in jobs:
+            for loc in job['location']:
+                if any(country in loc for country in eu_countries):
+                    filtered_jobs.append(job)
+                    break
+        return filtered_jobs
+
     def get_vacancies(self):
         jobs = self.filter_tech_jobs(self.scrape())
-        jobs = self.filter_eu_jobs(jobs)
-        return self.transform_data(jobs)
+        jobs = self.filter_eu_jobs(jobs, 'location')
+        jobs = self.transform_data(jobs)
+        for job in jobs:
+            job.save()
+        print('Jetbrains jobs saved')
+        return jobs
 

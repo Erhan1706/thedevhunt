@@ -13,4 +13,3 @@ lxml-html-clean==0.2.0
 python-dotenv==1.0.1
 whitenoise==6.7.0
 gunicorn==23.0.0
-supervisor==4.2.5

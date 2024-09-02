@@ -5,6 +5,11 @@ from .scraper import Scraper
 from jobs.models import Job
 from time import sleep
 from requests_html import HTMLSession
+from selenium import webdriver
+from selenium.webdriver.firefox.options import Options
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 class ThalesScraper(Scraper):
   url = "https://careers.thalesgroup.com/widgets"
@@ -105,19 +110,29 @@ class ThalesScraper(Scraper):
     else:
       raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
   
-  def description_to_html(self, url):    
-    session = HTMLSession()
-    response = session.get(url)
-
-    if response and response.status_code == 200:
-      response.html.render(timeout=20)
-      description = response.html.find('div.jd-info', first=True)
-      session.close()
-      return description.html
-    else:
-      print(f"Request for {url} failed")
-      session.close()
-      return None 
+  def description_to_html(self, url):
+    options = Options()
+    options.add_argument('-headless')
+    options.add_argument('-no-sandbox')
+    options.add_argument('-disable-dev-shm-usage')
+    
+    driver = webdriver.Firefox(options=options)
+    try:
+        driver.get(url)
+        # Wait for the specific element to be present
+        wait = WebDriverWait(driver, 20)
+        description = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.jd-info')))
+        
+        # Print page source for debugging
+        print(f"Page source for {url}:")
+        #print(driver.page_source)
+        
+        return description.get_attribute('outerHTML')
+    except Exception as e:
+        print(f"Error while fetching description for {url}: {e}")
+        return None
+    finally:
+        driver.quit()
 
   def transform_data(self, jobs):
     result = []

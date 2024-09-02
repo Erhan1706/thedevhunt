@@ -173,7 +173,6 @@ class UberScraper(Scraper):
       raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
     
   def description_to_html(self, url):
-    sleep(1)    
     session = HTMLSession()
     response = session.get(url, headers=self.headers_description)
 
@@ -181,7 +180,6 @@ class UberScraper(Scraper):
       response.html.render(timeout=20)
       description = response.html.find('div.css-cvJeNJ', first=True)
       session.close()
-      print('Success')
       return description.html
     except Exception as e:
       print(f"Error rendering page: {url}")

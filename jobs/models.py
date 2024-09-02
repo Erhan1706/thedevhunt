@@ -5,7 +5,7 @@ class Job(models.Model):
   slug = models.SlugField(max_length=200)
   description = models.TextField()
   role = models.CharField(max_length=400)
-  technologies = models.JSONField(null=True)
+  technologies = models.JSONField(blank=True, null=True)
   location = models.JSONField()
   company = models.CharField(max_length=200)
   remote = models.BooleanField()

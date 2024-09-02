@@ -7,4 +7,4 @@ class Command(BaseCommand):
 
   def handle(self, *args, **options):
 
-    ScraperFactory.get_scraper("accenture").get_vacancies()
+    ScraperFactory.get_scraper("booking").get_vacancies()
