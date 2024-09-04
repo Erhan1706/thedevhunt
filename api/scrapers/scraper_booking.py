@@ -76,9 +76,9 @@ class BookingScraper(Scraper):
         employment_type= 'FULL_TIME',
         remote = True if 'remote' in job['location_name'].lower() or 'remote' in job['street_address'].lower() else False
       )
-      #description = self.description_to_html(listing.link_to_apply)
-      #if not description: continue
-      #listing.description = description
+      description = self.description_to_html(listing.link_to_apply)
+      if not description: continue
+      listing.description = description
       result.append(listing)
 
     return result

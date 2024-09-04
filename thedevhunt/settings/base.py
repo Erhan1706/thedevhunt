@@ -148,3 +148,5 @@ STORAGES = {
 }
 
 STATIC_ROOT = BASE_DIR / "staticfiles"
+
+CELERY_TIMEZONE = 'UTC'
