@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     "rest_framework",
     "jobs",
+    "api",
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -150,3 +152,6 @@ STORAGES = {
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
 CELERY_TIMEZONE = 'UTC'
+
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"

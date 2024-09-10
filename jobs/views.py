@@ -24,7 +24,6 @@ def load_main_page(request):
     query_set = process_filters(filters)
     jobs = Job.objects.filter(query_set).order_by('-created_at')
 
-    #t = Job.objects.values('role').distinct()
     companies = Job.objects.values('company').distinct().order_by('company')
     page_obj = get_page_obj(jobs)
 
@@ -36,7 +35,7 @@ def load_main_page(request):
 def fetch_page(request):
     filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': [], 'companies': []})
     query_set = process_filters(filters)
-    jobs = Job.objects.filter(query_set)
+    jobs = Job.objects.filter(query_set).order_by('-created_at')
 
     page_num = request.GET.get("page")
     page_obj = get_page_obj(jobs, page_num)
@@ -50,7 +49,7 @@ def get_page_obj(jobs, page_num=1):
 def get_individual_listing(request, company, opening):
     if company == "booking_com":
         company = "booking.com"
-    t = Job.objects.filter(company__iexact=company, slug__iexact=opening)    
+        
     job = get_object_or_404(Job, company__iexact=company, slug__iexact=opening)
     return render(request, 'jobs/listing.html', {"job": job})
 

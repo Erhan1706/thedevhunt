@@ -7,9 +7,9 @@ from .scraper_accenture import AccentureScraper
 class ScraperFactory:
     
     available_scrapers = {"jetbrains": JetbrainsScraper,
-                          "booking": BookingScraper,
+                          #"booking": BookingScraper,
                           "thales": ThalesScraper,
-                          "uber": UberScraper,
+                          #"uber": UberScraper,
                           "accenture": AccentureScraper,}
 
     @staticmethod

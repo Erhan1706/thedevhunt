@@ -10,6 +10,7 @@ from selenium.webdriver.firefox.options import Options
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from time import time
 
 class ThalesScraper(Scraper):
   url = "https://careers.thalesgroup.com/widgets"
@@ -110,7 +111,7 @@ class ThalesScraper(Scraper):
     else:
       raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
   
-  def description_to_html(self, url):
+  async def description_to_html(self, url):
     options = Options()
     options.add_argument('-headless')
     options.add_argument('-no-sandbox')
@@ -156,8 +157,12 @@ class ThalesScraper(Scraper):
     return result
 
   def get_vacancies(self):
+    _start = time()
     data = self.scrape()
     jobs = data['refineSearch']['data']['jobs']
+    jobs = jobs[:20]
     result = self.transform_data(jobs)
     self.update_db(result)
     print('Thales jobs saved')
+    print(f"finished in: {time() - _start:.2f} seconds")
+
