@@ -11,6 +11,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from time import time
+from playwright.async_api import async_playwright
+import asyncio
 
 class ThalesScraper(Scraper):
   url = "https://careers.thalesgroup.com/widgets"
@@ -112,29 +114,22 @@ class ThalesScraper(Scraper):
       raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
   
   async def description_to_html(self, url):
-    options = Options()
-    options.add_argument('-headless')
-    options.add_argument('-no-sandbox')
-    options.add_argument('-disable-dev-shm-usage')
-    
-    driver = webdriver.Firefox(options=options)
-    try:
-        driver.get(url)
-        # Wait for the specific element to be present
-        wait = WebDriverWait(driver, 20)
-        description = wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, 'div.jd-info')))
-        
-        # Print page source for debugging
-        print(f"Page source for {url}:")
+    async with async_playwright() as p:
+        browser = await p.chromium.launch()
+        page = await browser.new_page()
+        await page.goto(url)
+        await page.wait_for_selector('div.jd-info', timeout=20000)
+        description = await page.query_selector('div.jd-info')
+        if description:
+            html = await description.inner_html()
+            await browser.close()
+            return html
+        else:
+            print(f"Request for {url} failed")
+            await browser.close()
+            return None
 
-        return description.get_attribute('outerHTML')
-    except Exception as e:
-        print(f"Error while fetching description for {url}: {e}")
-        return None
-    finally:
-        driver.quit()
-
-  def transform_data(self, jobs):
+  async def transform_data(self, jobs):
     result = []
     for job in jobs:
       listing = Job(
@@ -149,7 +144,7 @@ class ThalesScraper(Scraper):
         employment_type= 'FULL_TIME' if job['type'] == 'Full time' else 'PART_TIME',
         remote = False
       )
-      description = self.description_to_html(listing.link_to_apply)
+      description = await self.description_to_html(listing.link_to_apply)
       if not description: continue
       listing.description = description
       result.append(listing)
@@ -160,8 +155,8 @@ class ThalesScraper(Scraper):
     _start = time()
     data = self.scrape()
     jobs = data['refineSearch']['data']['jobs']
-    jobs = jobs[:20]
-    result = self.transform_data(jobs)
+    jobs = jobs
+    result = asyncio.run(self.transform_data(jobs))
     self.update_db(result)
     print('Thales jobs saved')
     print(f"finished in: {time() - _start:.2f} seconds")
