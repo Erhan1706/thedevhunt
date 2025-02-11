@@ -1,0 +1,7 @@
+.venv
+.vscode
+.git
+.env
+**/__pycache__/
+.pre-commit*
+README.md
