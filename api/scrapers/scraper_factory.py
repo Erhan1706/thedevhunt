@@ -1,16 +1,13 @@
-from .scraper_jetbrains import JetbrainsScraper
-from .scraper_booking import BookingScraper
-from .scraper_thales import ThalesScraper
-from .scraper_uber import UberScraper
-from .scraper_accenture import AccentureScraper
+from . import *
 
 class ScraperFactory:
-    
     available_scrapers = {"jetbrains": JetbrainsScraper,
-                          #"booking": BookingScraper,
+                          "booking": BookingScraper,
                           #"thales": ThalesScraper,
                           #"uber": UberScraper,
-                          "accenture": AccentureScraper,}
+                          "accenture": AccentureScraper,
+                          "visa": VisaSraper,
+                          "optiver": OptiverScraper}
 
     @staticmethod
     def get_scraper(scraper_name):

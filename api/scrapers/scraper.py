@@ -4,7 +4,15 @@ from django.utils import timezone
 from django.db import transaction
 
 
+# Abstract class for scraping job listings. All scrapers for specific websites should inherit from this class
 class Scraper(ABC):
+  eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
+                        "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
+                        "Cyprus", "Estonia", "Finland", "Greece", "Hungary", "Italy", "Bulgaria", "Switzerland", "Turkey",
+                        "Iceland", "Latvia", "Lithuania", "Luxembourg", "Malta", "Russia", "Serbia", "Slovakia", 
+                        "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
+                        "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
+
   @abstractmethod
   def scrape(self):
     pass
@@ -28,18 +36,20 @@ class Scraper(ABC):
   @abstractmethod
   def transform_data(self, jobs):
     """
-    Transforms scraped data into valid Job model instances
+    Transforms scraped data into valid Job instances
     """
     pass
 
   @abstractmethod
   def get_vacancies(self):
     """
-    Returns a list of Job model instances
+    Returns a list of valid Job objects in order to save them to the db
     """
     pass
 
+
   def save_or_update_job(self, job):
+    """ Save a job in the database. If it exists, update the fields to newest version """ 
     existing_job = Job.objects.filter(slug=job.slug, company=job.company).first()
     if existing_job:
       existing_job.title = job.title
@@ -58,7 +68,10 @@ class Scraper(ABC):
       job.save()
 
   def delete_non_scraped_jobs(self, scraped_job_identifiers):
-    # Delete jobs that are not in the scraped_job_identifiers list
+    """ Delete jobs that are not in the scraped_job_identifiers list """
+    if not scraped_job_identifiers:
+      print("No jobs were scraped")
+      return
     relevant_jobs = Job.objects.filter(company__iexact=scraped_job_identifiers[0][1])
     deleted_jobs = relevant_jobs.exclude(
         slug__in=[identifier[0] for identifier in scraped_job_identifiers],
@@ -68,7 +81,7 @@ class Scraper(ABC):
     deleted_jobs.delete()
   
   @transaction.atomic
-  def update_db(self, jobs):        
+  def update_db(self, jobs):
     scraped_job_identifiers = [(job.slug, job.company) for job in jobs]
     
     # Update or save scraped jobs

@@ -29,7 +29,7 @@ services:
 
   celery_worker:
     build: .
-    command: celery -A thedevhunt worker -l info
+    command: celery -A thedevhunt worker -l info --concurrency=4
     env_file:
       - .env
     depends_on:

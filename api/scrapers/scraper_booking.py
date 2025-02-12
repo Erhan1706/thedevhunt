@@ -13,6 +13,7 @@ class BookingScraper(Scraper):
       'accept': 'application/json, text/plain, */*',
       'accept-language': 'en-GB,en;q=0.8',
       'cache-control': 'no-cache',
+      'cookie': 'jasession=s%3AAjdVJjMjp4EGL7qsfzOV2mcco350x8bs.2XGXf%2F2sy3lUiqe4c1N7ySdlHchaA7tODxF5YjI6gYs; i18n=en-US;',
       'pragma': 'no-cache',
       'priority': 'u=1, i',
       'referer': 'https://jobs.booking.com/booking/jobs?location=Europe&stretch=25&stretchUnit=MILES&page=1',
@@ -39,6 +40,10 @@ class BookingScraper(Scraper):
 
 
   def description_to_html(self, url):
+    """ 
+    Hack to get html formatted description for job listings. Make extra request to 
+    the job listing page and extract the description from the script tag.
+    """
     def find_description_script(tag):
       return (tag.name == "script" and 
               "window.jobDescriptionConfig = " in tag.string if tag.string else False)
@@ -89,15 +94,10 @@ class BookingScraper(Scraper):
     return [job for job in job_list if any(keyword in job['data']['category'][0].lower() for keyword in tech_keywords)]
   
   def filter_eu_jobs(self, jobs, location_key):
-    eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
-                    "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
-                    "Cyprus", "Estonia", "Finland", "Greece", "Hungary", "Italy", "Bulgaria", "Switzerland", "Turkey",
-                    "Iceland", "Latvia", "Lithuania", "Luxembourg", "Malta", "Russia", "Serbia", "Slovakia", 
-                    "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
-                    "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
     
-    return [job for job in jobs if any(country in job[location_key] for country in eu_countries)]
+    return [job for job in jobs if any(country in job[location_key] for country in self.eu_countries)]
   
+
   def get_vacancies(self):
     data = self.scrape()
     jobs = self.filter_tech_jobs(data)

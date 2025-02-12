@@ -43,16 +43,10 @@ class JetbrainsScraper(Scraper):
         return result
     
     def filter_eu_jobs(self, jobs, location_key):
-        eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
-                        "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
-                        "Cyprus", "Estonia", "Finland", "Greece", "Hungary", "Italy", "Bulgaria", "Switzerland", "Turkey",
-                        "Iceland", "Latvia", "Lithuania", "Luxembourg", "Malta", "Russia", "Serbia", "Slovakia", 
-                        "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
-                        "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
         filtered_jobs = []
         for job in jobs:
             for loc in job['location']:
-                if any(country in loc for country in eu_countries):
+                if any(country in loc for country in self.eu_countries):
                     filtered_jobs.append(job)
                     break
         return filtered_jobs
