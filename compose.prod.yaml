@@ -9,35 +9,37 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - postgres_data:/var/lib/postgresql/data/  
-    ports:
-      - "5433:5432"
-    
+      - postgres_data:/var/lib/postgresql/data/
+    networks:
+      - backend
+
   web:
     build: .
     container_name: django
-    command: ./scripts/dev_web_start.sh
+    command: ./scripts/prod_web_start.sh
     ports:
       - "8000:8000"
-      - "5678:5678" # Debug port
     env_file:
       - .env
     depends_on:
       - db
       - redis
-    volumes:
-      - .:/app
+    networks:
+      - backend
+    restart: always
 
+  
   celery_worker:
     build: .
-    command: celery -A thedevhunt worker -l info --concurrency=4
+    command: celery multi start 4 -A thedevhunt -l info 
     env_file:
       - .env
     depends_on:
       - db
       - redis
-    volumes:
-      - .:/app
+    networks:
+      - backend
+    restart: unless-stopped
 
   celery_beat:
     build: .
@@ -47,12 +49,22 @@ services:
     depends_on:
       - db
       - redis
-    volumes:
-      - .:/app
+    networks:
+      - backend
+    restart: unless-stopped
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    command: ["redis-server"]
+    networks:
+      - backend
+    restart: unless-stopped
 
   flower:
     build: .
-    command: celery -A thedevhunt flower --port=5555
+    command: celery -A thedevhunt flower --port=5555 --basic_auth=${FLOWER_USER}:${FLOWER_PASSWORD}
     env_file:
       - .env
     depends_on:
@@ -60,14 +72,13 @@ services:
       - redis
     ports:
       - "5555:5555"
-    volumes:
-      - .:/app
-
-  redis:
-    image: redis:alpine
-    ports:
-      - "6379:6379"
-    command: ["redis-server"]
+    networks:
+      - backend
+    restart: unless-stopped
 
 volumes:
   postgres_data:
+
+networks:
+  backend:
+    driver: bridge

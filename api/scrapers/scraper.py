@@ -58,13 +58,15 @@ class Scraper(ABC):
       existing_job.company = job.company
       existing_job.location = job.location
       existing_job.link_to_apply = job.link_to_apply
-      existing_job.created_at = job.created_at
+      existing_job.created_at = job.created_at if job.created_at else existing_job.created_at
       existing_job.employment_type = job.employment_type
       existing_job.remote = job.remote
       existing_job.description = job.description
       existing_job.last_modified = timezone.now()
       existing_job.save()
     else:
+      if not job.created_at:
+        job.created_at = timezone.now() 
       job.save()
 
   def delete_non_scraped_jobs(self, scraped_job_identifiers):

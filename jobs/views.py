@@ -17,6 +17,11 @@ eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria",
 
 categories = ["Software Development", "Data & AI", "Hardware", "Cybersecurity", "IT & Support"]
 
+
+"""
+Loads the main page with all the job listings. Content.html is the base layout + filter layout + some extra information.
+Within content.html, job_list.html is loaded with the job listings.
+"""
 @require_http_methods(["GET"])
 def load_main_page(request):
     filters = request.session.get('filters',{'locations': [], 'roles': [], 'technologies': [], 'companies':[]})
@@ -41,6 +46,7 @@ def fetch_page(request):
     page_obj = get_page_obj(jobs, page_num)
     return render(request, 'jobs/job_list.html', {"page_obj": page_obj})
 
+""" Returns a paginator object for the given jobs """
 def get_page_obj(jobs, page_num=1):
     paginator = Paginator(jobs, 15)
     return paginator.get_page(page_num)

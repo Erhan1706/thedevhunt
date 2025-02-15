@@ -7,4 +7,4 @@ class Command(BaseCommand):
 
   def handle(self, *args, **options):
 
-    ScraperFactory.get_scraper("optiver").get_vacancies()
+    ScraperFactory.get_scraper("jetbrains").get_vacancies()
