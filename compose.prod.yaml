@@ -31,7 +31,7 @@ services:
   
   celery_worker:
     build: .
-    command: celery multi start 4 -A thedevhunt -l info 
+    command: celery -A thedevhunt worker -l info --concurrency=4
     env_file:
       - .env
     depends_on:
