@@ -8,7 +8,7 @@ services:
     networks:
       - backend
     volumes:
-      - static_volume:/home/devhunt/staticfiles/
+      - ./staticfiles:/home/devhunt/staticfiles/
 
   db:
     restart: always
@@ -39,7 +39,7 @@ services:
       - backend
     restart: always
     volumes:
-      - static_volume:/home/devhunt/staticfiles/
+      - ./staticfiles:/home/devhunt/staticfiles/
 
   
   celery_worker:
@@ -91,7 +91,6 @@ services:
 
 volumes:
   postgres_data:
-  static_volume:
 
 networks:
   backend:
