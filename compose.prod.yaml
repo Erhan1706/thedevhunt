@@ -1,4 +1,11 @@
 services:
+  nginx:
+    build: ./nginx
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
   db:
     restart: always
     image: postgres:latest
@@ -17,8 +24,8 @@ services:
     build: .
     container_name: django
     command: ./scripts/prod_web_start.sh
-    ports:
-      - "8000:8000"
+    expose:
+      - 8000
     env_file:
       - .env
     depends_on:
