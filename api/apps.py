@@ -16,8 +16,6 @@ class ApiConfig(AppConfig):
         prod = os.environ.get('DJANGO_PRODUCTION', '') != 'False'
         task_name = "async_scrape_all_vacancies"        
         try:
-            call_command('migrate', interactive=False)
-            # Ensure migrations have been applied before querying the DB
             if not PeriodicTask.objects.filter(name=task_name).exists():
                 schedule, _ = IntervalSchedule.objects.get_or_create(
                     every= 2 if not prod else 4,
