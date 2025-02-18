@@ -40,6 +40,7 @@ services:
     restart: always
     volumes:
       - ./staticfiles:/app/staticfiles/
+      - ./var/log/gunicorn:/app/logs/gunicorn
 
   
   celery_worker:

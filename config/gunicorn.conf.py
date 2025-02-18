@@ -1,6 +1,6 @@
 bind = "0.0.0.0:8000"
 workers = 4
 
-accesslog = "/var/log/gunicorn/access.log"
-errorlog = "/var/log/gunicorn/error.log"
+accesslog = "logs/gunicorn/access.log"
+errorlog = "logs/gunicorn/error.log"
 loglevel = "info"
