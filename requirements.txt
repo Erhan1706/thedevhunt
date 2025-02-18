@@ -16,3 +16,4 @@ redis==5.0.8
 playwright==1.46.0
 psycopg==3.2.4
 flower==2.0.1
+geopy==2.4.1

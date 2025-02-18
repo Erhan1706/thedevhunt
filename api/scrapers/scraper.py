@@ -2,6 +2,7 @@ from abc import ABC, abstractmethod
 from jobs.models import Job
 from django.utils import timezone
 from django.db import transaction
+import requests
 
 
 # Abstract class for scraping job listings. All scrapers for specific websites should inherit from this class
@@ -13,9 +14,16 @@ class Scraper(ABC):
                         "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
                         "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
 
-  @abstractmethod
-  def scrape(self):
-    pass
+  def scrape(self, method="GET"):
+    response = requests.request(method, self.url, headers=self.headers, data=self.payload)
+    if response.status_code == 200:
+      try:
+        data = response.json() 
+        return data
+      except ValueError:
+        print(f"Response content for {self.company} is not valid JSON")
+    else:
+      raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
   
   def is_tech_role(self, job):
       # Need to be lowercase for case-insensitive search

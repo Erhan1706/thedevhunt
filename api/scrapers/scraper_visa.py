@@ -7,6 +7,7 @@ from jobs.models import Job
 class VisaSraper(Scraper):
 
   url = "https://search.visa.com/CAREERS/careers/jobs?q="
+  company = "VISA"
 
   payload = json.dumps({
     "filters": [
@@ -76,18 +77,6 @@ class VisaSraper(Scraper):
       'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
   }
 
-  def scrape(self):
-    response = requests.request("POST", self.url, headers=self.headers, data=self.payload)
-    if response.status_code == 200:
-      try:
-        data = response.json() 
-        return data
-      except ValueError:
-        print("Response content for Booking.com is not valid JSON")
-    else:
-      raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
-
-
   def transform_data(self, jobs):
     result = []
     for job in jobs:
@@ -107,7 +96,7 @@ class VisaSraper(Scraper):
     return result
 
   def get_vacancies(self):
-    data = self.scrape()
+    data = self.scrape(method="POST")
     jobs = self.transform_data(data['jobDetails'])
     self.update_db(jobs)
     print('VISA jobs saved')

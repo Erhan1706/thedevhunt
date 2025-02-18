@@ -26,19 +26,9 @@ class BookingScraper(Scraper):
       'sec-gpc': '1',
       'user-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/127.0.0.0 Safari/537.36'
   }
+  payload = {}
+  company = "Booking.com"
     
-  def scrape(self):
-    response = requests.request("GET", self.url, headers=self.headers)
-    if response.status_code == 200:
-      try:
-        data = response.json() 
-        return data
-      except ValueError:
-        print("Response content for Booking.com is not valid JSON")
-    else:
-      raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
-
-
   def description_to_html(self, url):
     """ 
     Hack to get html formatted description for job listings. Make extra request to 

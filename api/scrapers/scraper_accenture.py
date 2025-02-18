@@ -38,16 +38,8 @@ class AccentureScraper(Scraper):
     'sec-gpc': '1',
   }
 
-  def scrape(self):
-    response = requests.request("POST", self.url, headers=self.headers, data=self.payload)
-    if response.status_code == 200:
-      try:
-        return response.json()
-      except ValueError:
-        print("Response content for Accenture is not valid JSON")
-    else:
-      raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
-    
+  company = "Accenture"
+
   def transform_data(self, jobs):
     result = []
     for job in jobs:
@@ -72,7 +64,7 @@ class AccentureScraper(Scraper):
     return [job for job in jobs if any(keyword in job['skill'].lower() for keyword in tech_keywords)]
   
   def get_vacancies(self):
-    data = self.scrape()
+    data = self.scrape(method="POST")
     jobs = self.filter_tech_jobs(data['data'])
     jobs = self.transform_data(jobs)
     self.update_db(jobs)

@@ -20,3 +20,4 @@ playwright==1.46.0
 psycopg==3.2.4
 flower==2.0.1
 debugpy==1.8.12
+geopy==2.4.1

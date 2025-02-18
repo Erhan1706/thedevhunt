@@ -9,6 +9,9 @@ class OptiverScraper(Scraper):
   url_amsterdam = "https://optiver.com/wp-admin/admin-ajax.php?action=get_posts&numberposts=100&paged=1&viewmode=list&post_type=job&level=&department=technology&office=amsterdam&search="
   url_london = "https://optiver.com/wp-admin/admin-ajax.php?action=get_posts&numberposts=100&paged=1&viewmode=list&post_type=job&level=&department=technology&office=london&search="
 
+  company = "Optiver"
+  headers = {}
+  payload = {}
 
   def scrape(self, city=''):
     """ At the time Optiver only has two offices in Europe """
@@ -21,11 +24,9 @@ class OptiverScraper(Scraper):
         data = response.json() 
         return data
       except ValueError:
-        print("Response content for Booking.com is not valid JSON")
+        print("Response content for Optiver is not valid JSON")
     else:
-      raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
-
-    return super().scrape()
+      raise Exception(f"Request for Optiver failed with status code: {response.status_code}")
   
   def transform_data(self, jobs, city="") -> list:
     result = []

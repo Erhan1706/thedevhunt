@@ -7,7 +7,8 @@ class ScraperFactory:
                           #"uber": UberScraper,
                           "accenture": AccentureScraper,
                           "visa": VisaSraper,
-                          "optiver": OptiverScraper}
+                          "optiver": OptiverScraper,
+                          "adyen": AdyenScraper}
 
     @staticmethod
     def get_scraper(scraper_name):
