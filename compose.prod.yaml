@@ -40,7 +40,7 @@ services:
     restart: always
     volumes:
       - ./staticfiles:/app/staticfiles/
-      - ./var/log/gunicorn:/app/logs/gunicorn
+      - /var/log/gunicorn:/app/logs/gunicorn
 
   
   celery_worker:
@@ -69,8 +69,6 @@ services:
 
   redis:
     image: redis:alpine
-    ports:
-      - "6379:6379"
     command: ["redis-server"]
     networks:
       - backend
