@@ -5,7 +5,7 @@
     hx-post="{% url 'add_filter' %}"
     hx-trigger="click"
     hx-target="#job_list"
-    hx-vals='{"country": "{{location}}"}'
+    hx-vals='{"location": "{{location}}"}'
   >
     {{ location }}
   </div>

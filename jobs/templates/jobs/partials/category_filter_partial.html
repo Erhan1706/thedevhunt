@@ -1,6 +1,6 @@
 {% for role in categories%}
   {% cycle 'btn-purple' 'btn-green' 'btn-orange' 'btn-blue' 'btn-red' as btn_colors silent %}
-  {% if role not in current_filters.roles %}
+  {% if role not in current_filters.role %}
     <button
       class="p-2 border rounded text-sm sm:text-base m-1 hover:text-white duration-200 {{btn_colors}}"
       hx-post= "{% url 'add_filter' %}"

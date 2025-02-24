@@ -1,4 +1,4 @@
-{% for company in current_filters.companies %}
+{% for company in current_filters.company %}
   <button
     class="px-2 py-1 border rounded bg-blue-500 border-gray-300 text-white m-1 relative cursor-default"
   >
@@ -14,7 +14,7 @@
     </span>
   </button>
 {% endfor %}
-{% for location in current_filters.locations %}
+{% for location in current_filters.location %}
   <button
     class="px-2 py-1 border rounded bg-blue-500 border-gray-300 text-white m-1 relative cursor-default"
   >
@@ -23,14 +23,14 @@
       class="absolute -top-1 -right-2 text-white rounded-full bg-red-500 w-4 h-4 text-center text-xs cursor-pointer hover:bg-red-700"
       hx-post="{% url 'remove_filter' %}"
       hx-trigger="click"
-      hx-vals='{"country": "{{location}}"}'
+      hx-vals='{"location": "{{location}}"}'
       hx-target="#job_list"
     >
       X
     </span>
   </button>
 {% endfor %}
-{% for role in current_filters.roles %}
+{% for role in current_filters.role %}
   <button
     class="px-2 py-1 border rounded bg-blue-500 border-gray-300 text-white m-1 relative cursor-default"
   >
@@ -47,12 +47,14 @@
   </button>
 {% endfor %}
 
-{% if current_filters.locations|length > 0 or current_filters.companies|length > 0 or current_filters.roles|length > 0 or current_filters.remote %}
+{% if current_filters.location|length > 0 or current_filters.company|length > 0 or current_filters.role|length > 0 or current_filters.remote or current_filters.search|length > 0%}
   <div class="text-red-500 cursor-pointer mx-2"
        id="clear_all"
        hx-swap-oob="true"
        hx-post="{% url 'clear_all_filters' %}"
-       hx-target="#job_list">
+       hx-target="#job_list"
+       hx-on:click="document.getElementById('default-search').value = ''" 
+       >
     Clear all
   </div>
 {% else %}
