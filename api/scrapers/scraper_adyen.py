@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 import requests
-import json
 from .scraper import Scraper
 from jobs.models import Job
 from geopy.geocoders import Nominatim
