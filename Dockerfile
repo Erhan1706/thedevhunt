@@ -11,9 +11,10 @@ RUN pip install -r requirements-dev.txt
 COPY tailwindcss .
 COPY static ./static
 RUN chmod +x ./tailwindcss
-RUN ./tailwindcss -i ./static/css/input.css -o ./static/css/output.css --minify
+RUN rm -f ./static/css/output.css
 
 COPY . .
+RUN ./tailwindcss -i ./static/css/input.css -o ./static/css/output.css --minify
 RUN chmod +x ./scripts/entrypoint.sh
 
 ENTRYPOINT ["./scripts/entrypoint.sh"] 
