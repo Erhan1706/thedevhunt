@@ -1,12 +1,11 @@
-from bs4 import BeautifulSoup
 import requests
 import json
 from .scraper import Scraper
 from jobs.models import Job
-from requests_html import HTMLSession
-from time import sleep
+import markdown2
 
 class UberScraper(Scraper):
+  company = "Uber"
   url = "https://www.uber.com/api/loadSearchJobsResults?localeCode=en"
   payload = json.dumps({
     "params": {
@@ -122,7 +121,9 @@ class UberScraper(Scraper):
       ],
       "department": [
         "Data Science",
-        "Engineering"
+        "Engineering",
+        "Product",
+        "Design",
       ],
       "team": [],
       "programAndPlatform": [],
@@ -172,20 +173,6 @@ class UberScraper(Scraper):
     else:
       raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
     
-  def description_to_html(self, url):
-    session = HTMLSession()
-    response = session.get(url, headers=self.headers_description)
-
-    try: 
-      response.html.render(timeout=20)
-      description = response.html.find('div.css-cvJeNJ', first=True)
-      session.close()
-      return description.html
-    except Exception as e:
-      print(f"Error rendering page: {url}")
-      session.close()
-      return None
-
   def transform_data(self, jobs):
     result = []
     for job in jobs:
@@ -202,11 +189,8 @@ class UberScraper(Scraper):
         created_at= job['creationDate'],
         employment_type= 'FULL_TIME' if job['type'] == 'Full-Time' else 'PART_TIME',
         remote = False,
-        description = job['description']
+        description = markdown2.markdown(job['description'])
       )
-      description = self.description_to_html(listing.link_to_apply)
-      if not description: continue
-      listing.description = description
       result.append(listing)
 
     return result
@@ -216,4 +200,4 @@ class UberScraper(Scraper):
     data = self.scrape()
     jobs = self.transform_data(data['data']['results'])
     self.update_db(jobs)
-    print('Uber jobs saved')
+    print(f'{self.company} jobs saved')

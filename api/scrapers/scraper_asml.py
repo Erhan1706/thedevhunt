@@ -1,7 +1,5 @@
-import requests
 from .scraper import Scraper
 from jobs.models import Job
-import html
 import json
 
 class ASMLScraper(Scraper):

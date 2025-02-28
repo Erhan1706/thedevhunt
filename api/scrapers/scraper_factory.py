@@ -4,7 +4,7 @@ class ScraperFactory:
     available_scrapers = {"jetbrains": JetbrainsScraper,
                           "booking": BookingScraper,
                           #"thales": ThalesScraper,
-                          #"uber": UberScraper,
+                          "uber": UberScraper,
                           "accenture": AccentureScraper,
                           "visa": VisaSraper,
                           "optiver": OptiverScraper,

@@ -74,19 +74,19 @@ services:
       - backend
     restart: unless-stopped
 
-  flower:
-    build: .
-    command: celery -A thedevhunt flower --port=5555 --basic_auth=${FLOWER_USER}:${FLOWER_PASSWORD}
-    env_file:
-      - .env
-    depends_on:
-      - db
-      - redis
-    ports:
-      - "5555:5555"
-    networks:
-      - backend
-    restart: unless-stopped
+  #flower:
+  #  build: .
+  #  command: celery -A thedevhunt flower --port=5555 --basic_auth=${FLOWER_USER}:${FLOWER_PASSWORD}
+  #  env_file:
+  #    - .env
+  #  depends_on:
+  #    - db
+  #    - redis
+  #  ports:
+  #    - "5555:5555"
+  #  networks:
+  #    - backend
+  #  restart: unless-stopped
 
 volumes:
   postgres_data:

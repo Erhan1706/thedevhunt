@@ -1,10 +1,5 @@
-from bs4 import BeautifulSoup
-import requests
-import json
 from .scraper import Scraper
 from jobs.models import Job
-from requests_html import HTMLSession
-from time import sleep
 from datetime import datetime, timezone
 
 
