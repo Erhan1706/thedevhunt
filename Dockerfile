@@ -7,8 +7,6 @@ ENV PYTHONUNBUFFERED 1
 
 COPY requirements-dev.txt .
 RUN pip install -r requirements-dev.txt
-RUN playwright install
-RUN playwright install-deps
 
 COPY tailwindcss .
 COPY static ./static

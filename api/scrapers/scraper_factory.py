@@ -10,7 +10,8 @@ class ScraperFactory:
                           "optiver": OptiverScraper,
                           "adyen": AdyenScraper,
                           "databricks": DatabricksScaper,
-                          "asml": ASMLScraper}
+                          "asml": ASMLScraper,
+                          "microsoft": MicrosoftScraper}
 
     @staticmethod
     def get_scraper(scraper_name):

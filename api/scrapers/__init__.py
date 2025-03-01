@@ -8,6 +8,7 @@ from .scraper_optiver import OptiverScraper
 from .scraper_adyen import AdyenScraper
 from .scraper_databricks import DatabricksScaper
 from .scraper_asml import ASMLScraper
+from .scraper_microsoft import MicrosoftScraper
 
 __all__ = [
     'JetbrainsScraper',
@@ -19,5 +20,6 @@ __all__ = [
     'OptiverScraper',
     'AdyenScraper',
     'DatabricksScaper',
-    'ASMLScraper'
+    'ASMLScraper',
+    'MicrosoftScraper'
 ]
