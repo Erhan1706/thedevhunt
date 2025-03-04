@@ -1,0 +1,34 @@
+{% extends "base.html" %} {% load static %} {% block content %} {% load custom_filters %}
+<div class="flex flex-col items-center lg:min-w-[60%] max-w-[90%]">
+    <h2 class="text-xl sm:text-3xl font-bold my-4 font-gothic" id="page_title">
+      Companies currently supported 
+    </h2>
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 mt-4">
+      {% for company in companies %}
+        <div
+          class="flex flex-col items-center justify-around bg-white opacity-0 m-2 py-2 px-4 rounded-md w-40 h-48 shadow-lg ring-1 ring-black ring-opacity-5 animate-pop"
+          style="animation-delay: {{ forloop.counter0|multiply:80}}ms;"
+        >
+        <img
+          src=" {% static 'logos/' %}{{company.company|lower|escape_slug}}.png"
+          alt="{{company.company}} logo"
+          class="h-16 w-16"
+        />
+        <span class="text-xl mx-2 ml-4 text-gray-600 font-gothic"> {{company.company}} </span>
+      </div>
+    {% endfor %}
+  </div>
+  <h3 class="text-lg sm:text-xl my-24 font-gothic text-center flex flex-col items-center">
+    Want to add/suggest a company? <br>
+    Feel free to contribute to our GitHub repository 
+    <a href="https://github.com/Erhan1706/thedevhunt" target="_blank"> 
+      <img
+          src=" {% static 'logos/' %}github.png"
+          alt="github logo"
+          class="h-12 w-12 my-5"
+      />
+    </a>
+  </h3>
+</div>
+
+{% endblock %}

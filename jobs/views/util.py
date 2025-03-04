@@ -3,9 +3,8 @@ from django.core.paginator import Paginator
 eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
                     "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
                     "Cyprus", "Estonia", "Finland", "Greece", "Hungary", "Italy", "Bulgaria", "Switzerland", "Turkey",
-                    "Iceland", "Latvia", "Lithuania", "Luxembourg", "Malta", "Russia", "Serbia", "Slovakia", 
-                    "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
-                    "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
+                    "Iceland", "Latvia", "Lithuania", "Luxembourg", "Russia", "Serbia", "Slovakia", 
+                    "Ukraine", "Slovenia", "Belarus", "Moldova", "Albania",]
 
 categories = ["Software Development", "Data & AI", "Hardware", "Cybersecurity", "IT & Support"]
 

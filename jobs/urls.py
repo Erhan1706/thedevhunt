@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import main, filters
+from .views import main, filters, companies_list
 
 urlpatterns = [
     path('get_filters/', filters.get_filters, name='get_filters'),
@@ -14,5 +14,6 @@ urlpatterns = [
     path('render_filters_mobile/', filters.render_filters_mobile, name='render_filters_mobile'),
     path('<slug:company>/<slug:opening>', main.get_individual_listing, name='individual_opening'),
     path('fetch_page/', main.fetch_page, name='fetch_page'),
+    path('companies/', companies_list.render_companies_list_page, name='companies_list'),
     path('', main.load_main_page, name='job_listings'),
 ]

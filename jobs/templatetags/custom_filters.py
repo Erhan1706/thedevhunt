@@ -38,3 +38,7 @@ def days_since_posted(date):
     else:
         hours = delta.seconds // 3600 
         return f'{hours}h ago'
+    
+@register.filter
+def multiply(value, arg):
+    return int(value) * int(arg)
