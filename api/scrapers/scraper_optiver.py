@@ -1,7 +1,9 @@
 import requests
 from .scraper import Scraper
 from jobs.models import Job
+from .scraper_registry import register_scraper
 
+@register_scraper("optiver")
 class OptiverScraper(Scraper):
 
   url_amsterdam = "https://optiver.com/wp-admin/admin-ajax.php?action=get_posts&numberposts=100&paged=1&viewmode=list&post_type=job&level=&department=technology&office=amsterdam&search="

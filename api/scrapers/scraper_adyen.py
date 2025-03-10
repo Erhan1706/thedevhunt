@@ -2,7 +2,9 @@ from .scraper import Scraper
 from jobs.models import Job
 from geopy.geocoders import Nominatim
 import html
+from .scraper_registry import register_scraper
 
+@register_scraper("adyen")
 class AdyenScraper(Scraper):
 
   url = "https://boards-api.greenhouse.io/v1/boards/adyen/jobs?content=true"

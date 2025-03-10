@@ -1,10 +1,11 @@
 import requests
-import json
 from .scraper import Scraper
 from jobs.models import Job
 import time
 import re
+from .scraper_registry import register_scraper
 
+@register_scraper("microsoft")
 class MicrosoftScraper(Scraper):
   company = "Microsoft"
 

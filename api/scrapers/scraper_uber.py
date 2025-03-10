@@ -3,7 +3,9 @@ import json
 from .scraper import Scraper
 from jobs.models import Job
 import markdown2
+from .scraper_registry import register_scraper
 
+@register_scraper("uber")
 class UberScraper(Scraper):
   company = "Uber"
   url = "https://www.uber.com/api/loadSearchJobsResults?localeCode=en"

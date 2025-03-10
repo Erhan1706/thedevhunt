@@ -1,8 +1,9 @@
 from .scraper import Scraper
 from jobs.models import Job
 from datetime import datetime, timezone
+from .scraper_registry import register_scraper
 
-
+@register_scraper("accenture")
 class AccentureScraper(Scraper):
   url = "https://www.accenture.com/api/accenture/jobsearch/result"
 

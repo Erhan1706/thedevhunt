@@ -1,10 +1,10 @@
-from bs4 import BeautifulSoup
-import requests
 import json
 from .scraper import Scraper
 from jobs.models import Job
+from .scraper_registry import register_scraper
 
-class VisaSraper(Scraper):
+@register_scraper("optiver")
+class VisaScraper(Scraper):
 
   url = "https://search.visa.com/CAREERS/careers/jobs?q="
   company = "VISA"

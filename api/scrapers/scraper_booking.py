@@ -5,8 +5,9 @@ from .scraper import Scraper
 from jobs.models import Job
 from time import sleep
 from requests.exceptions import ChunkedEncodingError
+from .scraper_registry import register_scraper
 
-
+@register_scraper("booking")
 class BookingScraper(Scraper):
   url = "https://jobs.booking.com/api/jobs?location=Europe&stretch=25&stretchUnit=MILES&page=1&sortBy=relevance&descending=false&internal=false&tags1=Booking.com%20Company%20Hierarchy%7CTransport%20Company%20Hierarchy&limit=100"
   headers = {

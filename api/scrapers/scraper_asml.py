@@ -1,7 +1,9 @@
 from .scraper import Scraper
 from jobs.models import Job
 import json
+from .scraper_registry import register_scraper
 
+@register_scraper("asml")
 class ASMLScraper(Scraper):
   url = "https://discover-euc1.sitecorecloud.io/discover/v2/126200477"
   company = "ASML"

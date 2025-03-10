@@ -7,7 +7,9 @@ from time import time
 from playwright.async_api import async_playwright
 import asyncio
 import random
+from .scraper_registry import register_scraper
 
+@register_scraper("thales")
 class ThalesScraper(Scraper):
   url = "https://careers.thalesgroup.com/widgets"
   headers = {

@@ -2,8 +2,9 @@ from .scraper import Scraper
 from jobs.models import Job
 from geopy.geocoders import Nominatim
 import html
+from .scraper_registry import register_scraper
 
-
+@register_scraper("databricks")
 class DatabricksScaper(Scraper):
 
   url = "https://www.databricks.com/careers-assets/page-data/company/careers/open-positions/page-data.json"

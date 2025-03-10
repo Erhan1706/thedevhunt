@@ -4,7 +4,6 @@ from django.utils import timezone
 from django.db import transaction
 import requests
 
-
 # Abstract class for scraping job listings. All scrapers for specific websites should inherit from this class
 class Scraper(ABC):
   eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 

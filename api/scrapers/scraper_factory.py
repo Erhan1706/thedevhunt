@@ -1,25 +1,15 @@
 from . import *
+from .scraper_registry import registry 
 
 class ScraperFactory:
-    available_scrapers = {"jetbrains": JetbrainsScraper,
-                          "booking": BookingScraper,
-                          #"thales": ThalesScraper,
-                          "uber": UberScraper,
-                          "accenture": AccentureScraper,
-                          "visa": VisaSraper,
-                          "optiver": OptiverScraper,
-                          "adyen": AdyenScraper,
-                          "databricks": DatabricksScaper,
-                          "asml": ASMLScraper,
-                          "microsoft": MicrosoftScraper}
-
     @staticmethod
     def get_scraper(scraper_name):
-      if scraper_name in ScraperFactory.available_scrapers:
-        return ScraperFactory.available_scrapers[scraper_name]()
+      scraper_cls = registry.get(scraper_name)
+      if scraper_cls:
+          return scraper_cls()
       else:
-        raise Exception(f"Scraper not available for {scraper_name}")
-      
+          raise Exception(f"Scraper not available for '{scraper_name}'")
+
     @staticmethod
     def get_all_scrapers():
-      return ScraperFactory.available_scrapers.keys()
+      return list(registry.keys())

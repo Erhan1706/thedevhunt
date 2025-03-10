@@ -4,7 +4,9 @@ from requests.models import Response
 import json
 from .scraper import Scraper
 from jobs.models import Job
+from .scraper_registry import register_scraper
 
+@register_scraper("jetbrains")
 class JetbrainsScraper(Scraper):
 
     URL = "https://www.jetbrains.com/careers/jobs/"
