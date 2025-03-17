@@ -70,13 +70,6 @@ class AmazonScraper(Scraper):
 
     return result
 
-  #def filter_tech_jobs(self, jobs):
-  #  tech_keywords = {"Solutions Architect", "Software Development", "Data Science", 
-  #                   "Machine Learning Science", "Hardware Development", "Systems, Quality, \u0026 Security Engineering"
-  #                   "Project/Program/Product Management--Non-Tech", "Operations, IT, \u0026 Support Engineering", }   
-  #  job_list = jobs['jobs']
-  #  return [job for job in job_list if any(keyword in job['data']['category'][0].lower() for keyword in tech_keywords)]
-
   def get_vacancies(self):
     all_jobs = []
     for code in self.country_codes.keys():

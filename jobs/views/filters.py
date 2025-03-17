@@ -129,17 +129,17 @@ def process_role_filters(roles):
 
 @require_http_methods(["POST"])
 def remove_filter(request: HttpRequest) -> HttpResponse:
-    filters =  get_session_filters(request)
+    filters = get_session_filters(request)
     if not filters:
         return HttpResponse(status=400)
     
     for key in FILTER_KEYS:
         value = request.POST.get(key)
+        if key == "remote" and value == "off":
+            filters['remote'] = False
+            continue
         if value and key in filters and value in filters[key]:
-            if key =="remote":
-                filters.pop('remote')
-            else:
-                filters[key].remove(value)
+            filters[key].remove(value)
     return render_job_list(request, filters)
 
 @require_http_methods(["GET"])

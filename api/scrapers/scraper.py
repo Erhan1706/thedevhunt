@@ -6,7 +6,7 @@ import requests
 
 # Abstract class for scraping job listings. All scrapers for specific websites should inherit from this class
 class Scraper(ABC):
-  eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
+  eu_countries = ["Netherlands", "UK", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
                         "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
                         "Cyprus", "Estonia", "Finland", "Greece", "Hungary", "Italy", "Bulgaria", "Switzerland", "Turkey",
                         "Iceland", "Latvia", "Lithuania", "Luxembourg", "Malta", "Russia", "Serbia", "Slovakia", 

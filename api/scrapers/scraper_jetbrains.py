@@ -44,7 +44,7 @@ class JetbrainsScraper(Scraper):
             result.append(listing)
         return result
     
-    def filter_eu_jobs(self, jobs, location_key):
+    def filter_eu_jobs(self, jobs):
         filtered_jobs = []
         for job in jobs:
             for loc in job['location']:
