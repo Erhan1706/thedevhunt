@@ -7,4 +7,4 @@ class Command(BaseCommand):
 
   def handle(self, *args, **options):
 
-    ScraperFactory.get_scraper("meta").get_vacancies()
+    ScraperFactory.get_scraper("datadog").get_vacancies()

@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% load static %} 
+{% block container_classes %}{% endblock %}
+
+{% block content %}
+  <section class="w-full bg-gradient-to-b from-blue-50 to-white pt-16 pb-24 px-4">
+    <div class="w-full container mt-32 mx-48 max-w-6xl flex flex-col lg:flex-row items-center">
+      <div class="lg:w-full mb-12 lg:mb-0 lg:pr-12">
+        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+          Hunt your <span class="text-blue-600">target tech job</span> in europe
+        </h1>
+        <p class="text-lg text-gray-600 mb-8 max-w-lg">
+          Devhunt aggregates the best tech opportunities across europe. Hit
+          your career goals with precision.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+          <a
+            href="#search"
+            class="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-emerald-700 text-center"
+          >
+            Find jobs
+          </a>
+        </div>
+        <div class="flex items-center text-sm text-gray-500">
+          <span>Over 2,500 tech jobs</span>
+        </div>
+      </div>
+      <div class="w-full lg:w-1/2 relative">
+      </div>
+    </div>
+  </section>
+{% endblock %}

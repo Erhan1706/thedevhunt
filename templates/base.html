@@ -33,8 +33,8 @@
           <a class="text-sm sm:text-base text-gray-700 mx-2 sm:mx-6 cursor-pointer" href="/companies"> Companies </a>
           <!-- <div class="popover absolute hidden bg-gray-600 text-xs text-white py-1 px-2 text-center rounded-lg">Coming soon</div> -->
         </div>
-      </nav>
-      <div class="flex justify-center min-h-screen pt-24 md:pb-24 pb-10 lg:px-24 sm:px-4 bg-gray-100">
+        </nav>
+      <div class="flex justify-center min-h-screen bg-gray-100 {% block container_classes %}pt-24 md:pb-24 pb-10 lg:px-24 sm:px-4{% endblock %}">
         {% block content %}
         {% endblock content %}
       </div>

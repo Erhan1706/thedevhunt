@@ -64,7 +64,7 @@ class AmazonScraper(Scraper):
         created_at= datetime.strptime(job['posted_date'], "%B %d, %Y").isoformat() + "Z", # Convert dates like "June 1, 2021" to iso format
         employment_type= 'FULL_TIME' if job['job_schedule_type'] == 'full-time' else 'INTERNSHIP',
         remote = False,
-        description = job['description'] 
+        description = f"<br>{job['description']}" 
       )
       result.append(listing)
 
