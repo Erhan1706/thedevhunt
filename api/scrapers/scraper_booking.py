@@ -82,7 +82,7 @@ class BookingScraper(Scraper):
   def filter_tech_jobs(self, jobs):
     tech_keywords = {"data", "engineering", "it", "security"}
     job_list = jobs['jobs']
-    return [job for job in job_list if any(keyword in job['data']['category'][0].lower() for keyword in tech_keywords)]
+    return [job for job in job_list if len(job['data']['category']) > 0 and any(keyword in job['data']['category'][0].lower() for keyword in tech_keywords)]
   
   def filter_eu_jobs(self, jobs, location_key):
     

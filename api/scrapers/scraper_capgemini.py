@@ -41,20 +41,28 @@ class CapgeminiScraper(Scraper):
       else:
         country_code = codes[1]
 
-      parsed_locations = []
-      # Get the country name from the country code
-      country = pycountry.countries.get(alpha_2=country_code)
-      for loc in locations:
-        loc = loc.strip()
-        parsed_locations.append(f"{loc}, {country.name}")
-        
-      return parsed_locations
+    parsed_locations = []
+    # Get the country name from the country code
+    country = pycountry.countries.get(alpha_2=country_code)
+    for loc in locations:
+      loc = loc.strip()
+      parsed_locations.append(f"{loc}, {country.name}")
+    
+    if not parsed_locations:
+      print("No locations found for job")
+      
+    return parsed_locations
 
 
 
   def transform_data(self, jobs):
     result = []
     for job in jobs:
+      # More inconsistencies with response data
+      creation_date = None
+      if type(job["updated_at"]) != str:
+        creation_date = job["indexed_at"] if type(job["indexed_at"]) == str else None
+
       listing = Job(
         title= job['title'],
         slug= job['ref'],
@@ -65,7 +73,7 @@ class CapgeminiScraper(Scraper):
         employment_type= 'FULL_TIME', 
         remote = False, 
         description = job["description"],
-        created_at = job["updated_at"]
+        created_at = creation_date
       )
       result.append(listing)
 

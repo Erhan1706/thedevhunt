@@ -10,8 +10,6 @@ class ApiConfig(AppConfig):
     # Create a periodic task to scrape vacancies if it does not exist
     def ready(self):
         from django_celery_beat.models import PeriodicTask, IntervalSchedule
-        from django.core.management import call_command
-        from .tasks import async_scrape_all_vacancies
 
         prod = os.environ.get('DJANGO_PRODUCTION', '') != 'False'
         task_name = "async_scrape_all_vacancies"        

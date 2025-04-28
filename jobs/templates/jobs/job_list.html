@@ -51,11 +51,13 @@
           </div>
         {% endif %}
         <div id="detail-container" class="flex flex-wrap my-2 gap-4">
-          <div
-            class="h-min bg-purple-100 ring-2 sm:ring-offset-1 px-2 py-[2px] ring-purple-400 rounded-full text-xs font-semibold stroke-orange-500 text-purple-600 hover:bg-purple-200 duration-100"
-          >
-            &#9679 {{job.role}}
-          </div>
+          {% if job.role %}
+            <div
+              class="h-min bg-purple-100 ring-2 sm:ring-offset-1 px-2 py-[2px] ring-purple-400 rounded-full text-xs font-semibold stroke-orange-500 text-purple-600 hover:bg-purple-200 duration-100"
+            >
+              &#9679 {{job.role}}
+            </div>
+          {% endif %}
           <div class="flex flex-wrap gap-4">
             {% if job.technologies|length > 3 %}
               {% for tech in job.technologies|slice:":3" %}

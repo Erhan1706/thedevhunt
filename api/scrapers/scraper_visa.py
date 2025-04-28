@@ -3,7 +3,7 @@ from .scraper import Scraper
 from jobs.models import Job
 from .scraper_registry import register_scraper
 
-@register_scraper("optiver")
+@register_scraper("visa")
 class VisaScraper(Scraper):
 
   url = "https://search.visa.com/CAREERS/careers/jobs?q="

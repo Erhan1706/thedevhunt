@@ -14,7 +14,7 @@ class Scraper(ABC):
                         "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
 
   def scrape(self, method="GET"):
-    response = requests.request(method, self.url, headers=self.headers, data=self.payload)
+    response = requests.request(method, self.url, headers=self.headers, data=self.payload, verify=False)
     if response.status_code == 200:
       try:
         data = response.json() 
@@ -54,7 +54,7 @@ class Scraper(ABC):
     """
     pass
 
-
+  @transaction.atomic
   def save_or_update_job(self, job):
     """ Save a job in the database. If it exists, update the fields to newest version """ 
     existing_job = Job.objects.filter(slug=job.slug, company=job.company).first()
@@ -89,13 +89,19 @@ class Scraper(ABC):
     print(f"Deleting {deleted_jobs.count()} jobs")
     deleted_jobs.delete()
   
-  @transaction.atomic
   def update_db(self, jobs):
     scraped_job_identifiers = [(job.slug, job.company) for job in jobs]
     
     # Update or save scraped jobs
     for job in jobs:
-        self.save_or_update_job(job)
+        try:
+          self.save_or_update_job(job)
+        except Exception as e:
+          print(f"Error saving job: {job.title}")
+          print(f"Slug: {job.slug} (length: {len(job.slug)})")
+          print(f"Company: {job.company} (length: {len(job.company)})")
+          print(f"Location: {job.location}")
+          print(f"Error: {str(e)}")
     
     # Delete jobs that weren't scraped
     self.delete_non_scraped_jobs(scraped_job_identifiers)

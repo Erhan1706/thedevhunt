@@ -55,7 +55,7 @@ class JetbrainsScraper(Scraper):
 
     def get_vacancies(self):
         jobs = self.filter_tech_jobs(self.scrape())
-        jobs = self.filter_eu_jobs(jobs, 'location')
+        jobs = self.filter_eu_jobs(jobs)
         jobs = self.transform_data(jobs)
         self.update_db(jobs)
         print('Jetbrains jobs saved')
