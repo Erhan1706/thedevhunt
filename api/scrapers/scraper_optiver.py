@@ -14,7 +14,7 @@ class OptiverScraper(Scraper):
   payload = {}
 
   def scrape(self, city=''):
-    """ At the time Optiver only has two offices in Europe """
+    """ Currently Optiver only has two offices in Europe """
     if city == 'amsterdam':
       response = requests.request("POST", self.url_amsterdam)
     elif city == 'london':

@@ -171,7 +171,7 @@ class UberScraper(Scraper):
         data = response.json() 
         return data
       except ValueError:
-        print("Response content for Booking.com is not valid JSON")
+        print("Response content for Uber is not valid JSON")
     else:
       raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
     

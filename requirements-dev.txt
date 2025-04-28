@@ -20,3 +20,4 @@ flower==2.0.1
 debugpy==1.8.12
 geopy==2.4.1
 markdown2==2.5.3
+pycountry==24.6.1
