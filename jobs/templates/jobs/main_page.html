@@ -2,30 +2,44 @@
 {% block container_classes %}{% endblock %}
 
 {% block content %}
-  <section class="w-full bg-gradient-to-b from-blue-50 to-white pt-16 pb-24 px-4">
-    <div class="w-full container mt-32 mx-48 max-w-6xl flex flex-col lg:flex-row items-center">
-      <div class="lg:w-full mb-12 lg:mb-0 lg:pr-12">
-        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-          Hunt your <span class="text-blue-600">target tech job</span> in europe
+  <section class="w-full bg-gradient-to-b from-blue-100 to-blue-300 pt-16 pb-24 px-4">
+    <div class="w-full mt-16 md:mt-32 flex flex-col md:flex-row justify-center items-center">
+      <div class="lg:mb-0 lg:pr-12 z-10 mx-12">
+        <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-12">
+          Hunt <span class="text-blue-600"> your <span class="text-red-600"> target </span></span>
+          <span class="block mt-4 text-blue-600">tech job <span class="text-black"> in Europe</span></span>
         </h1>
-        <p class="text-lg text-gray-600 mb-8 max-w-lg">
-          Devhunt aggregates the best tech opportunities across europe. Hit
-          your career goals with precision.
+        <p class="text-xl text-gray-800 mb-10 max-w-lg">
+          We aggregate the best tech opportunities across Europe. 
+          Hit your career goals with precision.
         </p>
-        <div class="flex flex-col sm:flex-row gap-4 mb-8">
+        <div class="flex items-center text-sm text-gray-500 mb-2">
+          <span>Over <span class="font-bold">{{ total_jobs }}+</span> tech jobs</span>
+        </div>
+        <div class="flex flex-row gap-4 mb-8">
           <a
-            href="#search"
-            class="px-6 py-3 bg-blue-600 text-white rounded-md font-medium hover:bg-emerald-700 text-center"
+            href="listings/"
+            class="px-6 py-3 bg-red-600 text-white rounded-md font-medium hover:bg-red-500 text-center"
           >
             Find jobs
           </a>
+          <a
+            href="companies/"
+            class="px-6 py-3 bg-blue-500 text-white rounded-md font-medium hover:bg-blue-400 text-center mx-4"
+          >
+            Companies
+          </a>
         </div>
-        <div class="flex items-center text-sm text-gray-500">
-          <span>Over 2,500 tech jobs</span>
-        </div>
+
       </div>
-      <div class="w-full lg:w-1/2 relative">
-      </div>
+      <dotlottie-wc
+        src="{% static 'assets/main_page_search.lottie' %}"
+        class="scale-x-[-1] mx-10 w-[25rem] h-[25rem]"
+        speed="0.5"
+        autoplay
+        loop
+      >
+      </dotlottie-wc>
     </div>
   </section>
 {% endblock %}
