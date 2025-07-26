@@ -42,7 +42,7 @@ def render_job_list(request: HttpRequest, filters: dict) -> HttpResponse:
     request.session['filters'] = filters
     template = loader.get_template('jobs/job_list.html')
     response = HttpResponse(template.render({"page_obj": page_obj, "current_filters": filters}, request))
-    response.headers["HX-Trigger"] = "filterChanged"
+    response.headers["HX-Trigger"] = "filterChanged" 
     return response
 
 @require_http_methods(["POST"])
@@ -111,15 +111,16 @@ def add_query_filters(query_set, key, filters) -> Q:
     return query_set
 
 def process_role_filters(roles):
+    # This is kinda bad, maybe in future this can be done by an LLM? A lot of work though
     role_mappings = {
-        'Software Development': ['Software', 'Software Developer', 'Software Engineering', 'Frontend Developer', 
-                                 'QA Engineer', 'Engineering', 'Backend Developer', 'Fullstack Developer'],
+        'Software Development': ['Software', 'Software Developer', 'Software Development', 'Software Engineering', 'Frontend Developer', 'Field Engineering',
+                                 'QA Engineer', 'Engineering', 'Backend Developer', 'Fullstack Developer', 'Solutions Architect', ],
         'Data & AI': ['Data Engineer', 'Data Science', 'Data Scientist/ML Engineer', "Data & AI",
-                      ' Data Science & Analytics', 'ML Engineer', 'Head of Data Office'],
+                      'Data Science & Analytics', 'ML Engineer', 'Head of Data Office', 'Data and Analytics'],
         'IT & Support': ['IT Services', 'Support Engineer', 'Developer Advocate', 'Information Systems - Information Technology',
-                          'Product Manager'],
+                          'Product Manager', 'IT', 'Customer Support', 'Project/Program/Product Management--Non-Tech'],
         'Cybersecurity': ['Cybersecurity', 'Security specialist', ' Security & Infrastructure'],
-        'Hardware': ['Hardware', 'System'],
+        'Hardware': ['Hardware', 'System', 'Hardware Development', 'Hardware Engineering'],
     }
     query_set = Q()
     for role in roles:

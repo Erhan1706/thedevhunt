@@ -28,6 +28,7 @@ class DatadogScraper(Scraper):
     'sec-gpc': '1',
     'user-agent': 'Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Mobile Safari/537.36'
   }
+  
   def determine_remote(self, location) -> bool:
     # They store the location in the format "City, Country/Remote; City, Country/Remote"
     # Determine if second location is remote for all listed locations

@@ -13,20 +13,23 @@ class OptiverScraper(Scraper):
   headers = {}
   payload = {}
 
-  def scrape(self, city=''):
+  def scrape(self, city='') -> dict: #type: ignore
     """ Currently Optiver only has two offices in Europe """
+    response = None
     if city == 'amsterdam':
       response = requests.request("POST", self.url_amsterdam)
     elif city == 'london':
       response = requests.request("POST", self.url_london)
-    if response.status_code == 200:
+    if response is not None and response.status_code == 200:
       try:
         data = response.json() 
         return data
       except ValueError:
         print("Response content for Optiver is not valid JSON")
-    else:
+    elif response is not None:
       raise Exception(f"Request for Optiver failed with status code: {response.status_code}")
+    else:
+      raise Exception("No response received for Optiver scrape; invalid city parameter?")
   
   def transform_data(self, jobs, city="") -> list:
     result = []

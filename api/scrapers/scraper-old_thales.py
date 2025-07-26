@@ -100,7 +100,7 @@ class ThalesScraper(Scraper):
     "locationData": {}
   })
 
-  def scrape(self):
+  def scrape_custom(self):
     response = requests.request("POST", self.url, headers=self.headers, data=self.payload)
     if response.status_code == 200:
       try:
@@ -108,6 +108,7 @@ class ThalesScraper(Scraper):
         return data
       except ValueError:
         print("Response content for Thales is not valid JSON")
+        raise Exception("Invalid JSON response from Thales API")
     else:
       raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
   
@@ -130,7 +131,7 @@ class ThalesScraper(Scraper):
       await browser.close()
       return descriptions
     
-  async def transform_data(self, jobs):
+  async def transform_data_async(self, jobs):
     job_listings = [
         Job(
             title=job['title'],
@@ -158,9 +159,9 @@ class ThalesScraper(Scraper):
 
   def get_vacancies(self):
     _start = time()
-    data = self.scrape()
+    data = self.scrape_custom()
     jobs = data['refineSearch']['data']['jobs']
-    result = asyncio.run(self.transform_data(jobs))
+    result = asyncio.run(self.transform_data_async(jobs))
     self.update_db(result)
     print('Thales jobs saved')
     print(f"finished in: {time() - _start:.2f} seconds")

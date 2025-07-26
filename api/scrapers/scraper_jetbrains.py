@@ -11,8 +11,8 @@ class JetbrainsScraper(Scraper):
 
     URL = "https://www.jetbrains.com/careers/jobs/"
     
-    def scrape(self):
-        page_source: Response =  requests.get(self.URL)
+    def scrape_custom(self, method="GET"):
+        page_source: Response =  requests.request(method, self.URL)
         if page_source.status_code != 200:
             raise Exception(f"Request for {self.URL} failed with status code: {page_source.status_code}")
 
@@ -23,7 +23,9 @@ class JetbrainsScraper(Scraper):
                     "var VACANCIES =" in tag.string if tag.string else False)
 
         vacancies_script = soup.find(find_vacancies_script)
-        json_vacancies = json.loads(vacancies_script.contents[0].split("var VACANCIES = ")[1].strip())
+        if not vacancies_script:
+            raise Exception("Vacancies script not found in the page source")
+        json_vacancies = json.loads(vacancies_script.contents[0].split("var VACANCIES = ")[1].strip()) # type: ignore
         return json_vacancies
     
     def transform_data(self, jobs) -> list:
@@ -54,10 +56,9 @@ class JetbrainsScraper(Scraper):
         return filtered_jobs
 
     def get_vacancies(self):
-        jobs = self.filter_tech_jobs(self.scrape())
+        jobs = self.filter_tech_jobs(self.scrape_custom())
         jobs = self.filter_eu_jobs(jobs)
         jobs = self.transform_data(jobs)
         self.update_db(jobs)
         print('Jetbrains jobs saved')
-        return jobs
 

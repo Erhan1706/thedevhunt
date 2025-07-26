@@ -32,7 +32,7 @@ class AmazonScraper(Scraper):
     'sec-ch-ua-platform': '"Android"',
   }
 
-  def scrape(self, url):
+  def scrape_custom(self, url):
     """ Scrape all jobs from Amazon API. Navigate through the paginated results """
     offset = 0
     all_jobs = []
@@ -74,7 +74,7 @@ class AmazonScraper(Scraper):
     all_jobs = []
     for code in self.country_codes.keys():
       url = f"{self.base_url}&loc_query={self.country_codes[code]}&country={code}"
-      data = self.scrape(url)
+      data = self.scrape_custom(url)
       jobs = self.transform_data(data)
       all_jobs += jobs 
       sleep(0.5)

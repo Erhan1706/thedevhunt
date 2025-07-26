@@ -6,6 +6,11 @@ import requests
 
 # Abstract class for scraping job listings. All scrapers for specific websites should inherit from this class
 class Scraper(ABC):
+  url = ""
+  headers = {}
+  payload = {}
+  company = ""
+
   eu_countries = ["Netherlands", "UK", "United Kingdom", "Germany", "France", "Austria", "Ireland", "Czech Republic", 
                         "Denmark", "Belgium", "Croatia", "Portugal", "Spain", "Romania", "Poland", "Norway", "Sweden",
                         "Cyprus", "Estonia", "Finland", "Greece", "Hungary", "Italy", "Bulgaria", "Switzerland", "Turkey",
@@ -13,7 +18,7 @@ class Scraper(ABC):
                         "Ukraine", "Slovenia", "Belarus", "Bosnia and Herzegovina", "Moldova", "Montenegro",
                         "San Marino", "Vatican City", "Liechtenstein", "Albania","Kosovo", "Monaco", "North Macedonia", "Andorra"]
 
-  def scrape(self, method="GET"):
+  def scrape(self, method="GET") -> dict:
     response = requests.request(method, self.url, headers=self.headers, data=self.payload, verify=False)
     if response.status_code == 200:
       try:
@@ -21,6 +26,7 @@ class Scraper(ABC):
         return data
       except ValueError:
         print(f"Response content for {self.company} is not valid JSON")
+        raise ValueError(f"Response content for {self.company} is not valid JSON")
     else:
       raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
   
@@ -41,7 +47,7 @@ class Scraper(ABC):
     return [job for job in jobs if self.is_tech_role(job)]
   
   @abstractmethod
-  def transform_data(self, jobs):
+  def transform_data(self, jobs) -> list[Job]:
     """
     Transforms scraped data into valid Job instances
     """

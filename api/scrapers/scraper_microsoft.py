@@ -39,7 +39,7 @@ class MicrosoftScraper(Scraper):
     'x-subcorrelationid': '3189c374-6e6a-08f2-7223-4267c0a7b1a7'
   }
 
-  def scrape(self):
+  def scrape_custom(self):
     """ Try to minize the amount of data scraped by filtering only relevant countries. Microsoft API limits to max 8 countries """
     data = []
     
@@ -101,7 +101,7 @@ class MicrosoftScraper(Scraper):
 
 
   def get_vacancies(self):
-    data = self.scrape()
+    data = self.scrape_custom()
     jobs = self.transform_data(data)
     self.update_db(jobs)
     print(f'{self.company} jobs saved')

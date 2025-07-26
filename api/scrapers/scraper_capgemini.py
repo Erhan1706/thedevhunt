@@ -2,6 +2,7 @@ from .scraper import Scraper
 from jobs.models import Job
 from .scraper_registry import register_scraper
 import pycountry 
+import html
 
 @register_scraper("capgemini")
 class CapgeminiScraper(Scraper):
@@ -46,14 +47,12 @@ class CapgeminiScraper(Scraper):
     country = pycountry.countries.get(alpha_2=country_code)
     for loc in locations:
       loc = loc.strip()
-      parsed_locations.append(f"{loc}, {country.name}")
+      if country: parsed_locations.append(f"{loc}, {country.name}")
     
     if not parsed_locations:
       print("No locations found for job")
       
     return parsed_locations
-
-
 
   def transform_data(self, jobs):
     result = []
@@ -72,7 +71,7 @@ class CapgeminiScraper(Scraper):
         link_to_apply= job["apply_job_url"],
         employment_type= 'FULL_TIME', 
         remote = False, 
-        description = job["description"],
+        description = html.unescape(job["description"]),
         created_at = creation_date
       )
       result.append(listing)

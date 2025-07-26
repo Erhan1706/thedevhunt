@@ -50,7 +50,7 @@ class BookingScraper(Scraper):
     if response and response.status_code == 200:
       soup: BeautifulSoup = BeautifulSoup(response.content, "lxml")
       script_tag = soup.find(find_description_script)
-      description_json = script_tag.text.split("window.jobDescriptionConfig = ")[1]
+      description_json = script_tag.text.split("window.jobDescriptionConfig = ")[1] # type: ignore
       description = json.loads(description_json[:-2])
       return description['job']['description']
     else:

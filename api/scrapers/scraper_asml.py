@@ -2,6 +2,7 @@ from .scraper import Scraper
 from jobs.models import Job
 import json
 from .scraper_registry import register_scraper
+import requests
 
 @register_scraper("asml")
 class ASMLScraper(Scraper):
@@ -10,6 +11,58 @@ class ASMLScraper(Scraper):
 
 
   payload = json.dumps({
+    "context": {
+      "page": {
+        "uri": "https://www.asml.com/en/careers/find-your-job?icmp=careers-home-header-link&job_country=Netherlands&job_educational_backgrounds=Computer+Science&job_type=Fix"
+      },
+      "locale": {
+        "country": "us",
+        "language": "en"
+      }
+    },
+    "widget": {
+      "items": [
+        {
+          "entity": "content",
+          "rfk_id": "asml_job_search",
+          "search": {
+            "limit": 100,
+            "offset": 0,
+            "content": {},
+            "filter": {
+              "type": "and",
+              "filters": [
+                {
+                  "name": "job_country",
+                  "values": [
+                    "Netherlands"
+                  ],
+                  "type": "anyOf"
+                },
+                {
+                  "name": "job_type",
+                  "values": [
+                    "Fix"
+                  ],
+                  "type": "anyOf"
+                },
+                {
+                  "name": "job_educational_backgrounds",
+                  "values": [
+                    "Computer Science",
+                    "Data Science"
+                  ],
+                  "type": "anyOf"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  })
+
+  payload2 = json.dumps({
     "context": {
       "page": {
         "uri": "https://www.asml.com/en/careers/find-your-job?icmp=careers-home-header-link&job_technical_fields=IT%7CSoftware%7CSystem+Integration+and+Testing&job_type=Fix"
@@ -75,13 +128,32 @@ class ASMLScraper(Scraper):
     'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36'
   }
 
+  def scrape_custom(self, payload, method="GET") -> dict:
+    response = requests.request(method, self.url, headers=self.headers, data=payload, verify=False)
+    if response.status_code == 200:
+      try:
+        data = response.json() 
+        return data
+      except ValueError:
+        print(f"Response content for {self.company} is not valid JSON")
+        raise ValueError(f"Response content for {self.company} is not valid JSON")
+    else:
+      raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
+
   def transform_data(self, jobs):
     result = []
     for job in jobs:
+      # For some reason data does not always come in a consistent format
+      if job['job_technical_fields'] and len(job['job_technical_fields']) > 0:
+        role = job['job_technical_fields'][0]
+      elif job['job_teams'] and len(job['job_teams']) > 0:
+        role = job['job_teams'][0]
+      else: role = None
+
       listing = Job(
         title= job['name'],
         slug= job['id'],
-        role= job['job_technical_fields'][0] if len(job['job_technical_fields']) > 0 else None,
+        role= role,
         company= self.company,
         location= [f"{job['job_city']}, {job['job_country']}"],
         link_to_apply= job['url'],
@@ -98,8 +170,10 @@ class ASMLScraper(Scraper):
     return [job for job in jobs if any(country in job['job_country'] for country in self.eu_countries)]
 
   def get_vacancies(self):
-    jobs = self.scrape(method="POST")
-    eu_jobs = self.filter_eu_jobs(jobs['widgets'][0]['content'])
+    jobs1 = self.scrape_custom(payload=self.payload, method="POST")
+    jobs2 = self.scrape_custom(payload=self.payload2, method="POST") # Second payload for different job types
+    all_jobs = jobs1['widgets'][0]['content'] + jobs2['widgets'][0]['content']
+    eu_jobs = self.filter_eu_jobs(all_jobs)
     jobs = self.transform_data(eu_jobs)
     self.update_db(jobs)
     print(f"{self.company} jobs saved")

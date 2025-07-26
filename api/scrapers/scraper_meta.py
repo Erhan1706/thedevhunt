@@ -35,7 +35,7 @@ class MetaScraper(Scraper):
     'Cookie': 'datr=D5XNZ63yXJ5n2nAUlbWvse4N; wd=1016x846'
   }
 
-  def scrape_description(self, job_id):
+  def scrape_description(self, job_id) -> tuple | None:
     url = f"https://www.metacareers.com/jobs/{job_id}"
     response: Response = requests.get(url)
     if response.status_code == 200:
@@ -44,7 +44,7 @@ class MetaScraper(Scraper):
 
       script_tag = soup.find("script", type="application/ld+json")
       if script_tag:
-        created_at = json.loads(script_tag.string)["datePosted"]
+        created_at = json.loads(script_tag.string)["datePosted"] #type: ignore
       else:
         created_at = None
       return str(description), created_at
@@ -60,7 +60,11 @@ class MetaScraper(Scraper):
          description = existing_job.description
          created_at = existing_job.created_at 
       else:
-         description, created_at = self.scrape_description(job['id'])
+         descriptions = self.scrape_description(job['id'])
+         if not descriptions:
+            print(f"Failed to fetch description for job {job['id']}")
+            continue
+         description, created_at = descriptions
       listing = Job(
         title= job['title'],
         slug= job['id'],

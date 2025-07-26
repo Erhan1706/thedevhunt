@@ -20,7 +20,7 @@ class DatabricksScaper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['id'],
-        role= job['metadata'][0]['value'][0] if len(job['metadata'][0]['value']) > 0 else None,
+        role= job['metadata'][1]['value'][0] if job['metadata'][1]['value'] and len(job['metadata'][1]['value']) > 0 else None,
         company= self.company,
         location= [f"{job['location']['name']}"],
         link_to_apply= job['absolute_url'],
@@ -37,7 +37,7 @@ class DatabricksScaper(Scraper):
     revelevant_databricks_departments = {"Engineering", "Field Engineering", "IT", "Mosaic AI", "Security", "Product"}
     tech_jobs = []
     for job in jobs:
-      department = job['metadata'][0]['value']
+      department = job['metadata'][1]['value']
       if not department or len(department) == 0: continue
       if department[0] in revelevant_databricks_departments:
         tech_jobs.append(job)

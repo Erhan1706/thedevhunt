@@ -50,6 +50,10 @@ class UberScraper(Scraper):
         },
         {
           "country": "GBR",
+          "city": "Manchester"
+        },
+        {
+          "country": "GBR",
           "city": "Southampton"
         },
         {
@@ -110,6 +114,10 @@ class UberScraper(Scraper):
         },
         {
           "country": "FRA",
+          "city": "Nantes"
+        },
+        {
+          "country": "FRA",
           "city": "Aubervilliers"
         },
         {
@@ -164,14 +172,15 @@ class UberScraper(Scraper):
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8',
   }
 
-  def scrape(self):
-    response = requests.request("POST", self.url, headers=self.headers, data=self.payload)
+  def scrape(self, method="POST"):
+    response = requests.request(method, self.url, headers=self.headers, data=self.payload)
     if response.status_code == 200:
       try:
         data = response.json() 
         return data
       except ValueError:
-        print("Response content for Uber is not valid JSON")
+        print("Response content for Uber is not valid JSON") 
+        raise Exception("Invalid JSON response from Uber API")
     else:
       raise Exception(f"Request for {self.url} failed with status code: {response.status_code}")
     

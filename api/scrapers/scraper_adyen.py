@@ -47,8 +47,8 @@ class AdyenScraper(Scraper):
     eu_jobs = []
     for job in jobs:
       city = job["location"]["name"]
-      location = self.geolocator.geocode(city, language="en", timeout=None)
-      country = location.address.split(", ")[-1]
+      location = self.geolocator.geocode(city, language="en", timeout=None) #type: ignore issue with geopy
+      country = location.address.split(", ")[-1] #type: ignore
       if country in self.eu_countries:
         job["country"] = country
         eu_jobs.append(job)
