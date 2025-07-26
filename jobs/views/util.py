@@ -6,7 +6,8 @@ eu_countries = ["Netherlands", "United Kingdom", "Germany", "France", "Austria",
                     "Iceland", "Latvia", "Lithuania", "Luxembourg", "Russia", "Serbia", "Slovakia", 
                     "Ukraine", "Slovenia", "Belarus", "Moldova", "Albania",]
 
-categories = ["Software Development", "Data & AI", "Hardware", "Cybersecurity", "IT & Support"]
+categories = ["Software Development", "Data", "ML & AI", "Cloud & Infrastructure", "Hardware", "Cybersecurity", "IT & Support", 
+              "Product & Project Management", "Design", "Other"]
 
 
 """ Returns a paginator object for the given jobs """

@@ -57,7 +57,7 @@ class AmazonScraper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['id'],
-        role= job['job_category'],
+        role= self.classify_role_smart(job['job_category']),
         company= self.company,
         location= [f"{job['city']}, {self.country_codes[job['country_code']]}"],
         link_to_apply= f"https://amazon.jobs/{job['job_path']}",

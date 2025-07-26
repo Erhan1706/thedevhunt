@@ -86,7 +86,7 @@ class MicrosoftScraper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['jobId'],
-        role= job['properties']['profession'],
+        role= self.classify_role_smart(job['properties']['profession']),
         company= self.company,
         location= locations,
         link_to_apply= f"https://jobs.careers.microsoft.com/global/en/job/{job['jobId']}",

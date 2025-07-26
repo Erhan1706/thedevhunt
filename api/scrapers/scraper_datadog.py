@@ -46,7 +46,7 @@ class DatadogScraper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['job_id'],
-        role= job["department"],
+        role= self.classify_role_smart(job["department"]),
         company= self.company,
         location= job["location_string"].split(";"),
         link_to_apply= job["absolute_url"],

@@ -20,7 +20,7 @@ class DatabricksScaper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['id'],
-        role= job['metadata'][1]['value'][0] if job['metadata'][1]['value'] and len(job['metadata'][1]['value']) > 0 else None,
+        role= self.classify_role_smart(job['metadata'][1]['value'][0]) if job['metadata'][1]['value'] and len(job['metadata'][1]['value']) > 0 else None,
         company= self.company,
         location= [f"{job['location']['name']}"],
         link_to_apply= job['absolute_url'],

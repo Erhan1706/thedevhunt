@@ -81,7 +81,7 @@ class VisaScraper(Scraper):
     result = []
     for job in jobs:
         listing = Job(
-            role = job["department"],
+            role = self.classify_role_smart(job["department"]),
             company = "VISA",
             title = job["jobTitle"],
             location= [f"{job['city']}, {job['country']}"],

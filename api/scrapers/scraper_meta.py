@@ -68,7 +68,7 @@ class MetaScraper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['id'],
-        role= job['teams'][0],
+        role= self.classify_role_smart(job['teams'][0]),
         company= self.company,
         location= job["locations"],
         link_to_apply= f"https://www.metacareers.com/jobs/{job['id']}",

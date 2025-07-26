@@ -153,7 +153,7 @@ class ASMLScraper(Scraper):
       listing = Job(
         title= job['name'],
         slug= job['id'],
-        role= role,
+        role= self.classify_role_smart(role) if role else None,
         company= self.company,
         location= [f"{job['job_city']}, {job['job_country']}"],
         link_to_apply= job['url'],

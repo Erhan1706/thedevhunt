@@ -42,7 +42,7 @@ class AccentureScraper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['jobId'],
-        role= job['skill'],
+        role= self.classify_role_smart(job['skill']),
         company= "Accenture",
         location= [f"{job['jobCityState'][0]}, {job['country']}"],
         link_to_apply= job['jobDetailUrl'],

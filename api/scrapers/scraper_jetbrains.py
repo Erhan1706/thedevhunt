@@ -32,7 +32,7 @@ class JetbrainsScraper(Scraper):
         result = []
         for job in jobs:
             listing = Job(
-                role = job["role"][0],
+                role = self.classify_role_smart(job["role"][0]),
                 company = "Jetbrains",
                 title = job["title"],
                 location = job["location"],

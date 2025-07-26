@@ -64,7 +64,7 @@ class BookingScraper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['slug'],
-        role= job['category'][0],
+        role= self.classify_role_smart(job['category'][0]),
         company= "Booking.com",
         location= [job['full_location']],
         link_to_apply= f"https://jobs.booking.com/booking/jobs/{job['slug']}?lang=en-us",

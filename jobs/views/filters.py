@@ -111,21 +111,13 @@ def add_query_filters(query_set, key, filters) -> Q:
     return query_set
 
 def process_role_filters(roles):
-    # This is kinda bad, maybe in future this can be done by an LLM? A lot of work though
-    role_mappings = {
-        'Software Development': ['Software', 'Software Developer', 'Software Development', 'Software Engineering', 'Frontend Developer', 'Field Engineering',
-                                 'QA Engineer', 'Engineering', 'Backend Developer', 'Fullstack Developer', 'Solutions Architect', ],
-        'Data & AI': ['Data Engineer', 'Data Science', 'Data Scientist/ML Engineer', "Data & AI",
-                      'Data Science & Analytics', 'ML Engineer', 'Head of Data Office', 'Data and Analytics'],
-        'IT & Support': ['IT Services', 'Support Engineer', 'Developer Advocate', 'Information Systems - Information Technology',
-                          'Product Manager', 'IT', 'Customer Support', 'Project/Program/Product Management--Non-Tech'],
-        'Cybersecurity': ['Cybersecurity', 'Security specialist', ' Security & Infrastructure'],
-        'Hardware': ['Hardware', 'System', 'Hardware Development', 'Hardware Engineering'],
-    }
+    """
+    Processes the roles and returns a Q object that can be used to filter the jobs from the db.
+    Uses fuzzy matching to classify roles into categories.
+    """
     query_set = Q()
     for role in roles:
-        if role in role_mappings:
-            query_set |= Q(role__in=role_mappings.get(role))
+        query_set |= Q(role__icontains=role)
     return query_set
 
 @require_http_methods(["POST"])

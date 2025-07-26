@@ -33,6 +33,21 @@
   .btn-orange {
     @apply border-orange-500 text-orange-700 hover:bg-orange-500;
   }
+  .btn-yellow {
+    @apply border-yellow-500 text-yellow-700 hover:bg-yellow-500;
+  }
+  .btn-gray {
+    @apply border-gray-500 text-gray-700 hover:bg-gray-500;
+  }
+  .btn-cyan {
+    @apply border-cyan-500 text-cyan-700 hover:bg-cyan-500;
+  }
+  .btn-pink {
+    @apply border-pink-500 text-pink-700 hover:bg-pink-500;
+  }
+  .btn-teal {
+    @apply border-teal-500 text-teal-700 hover:bg-teal-500;
+  }
   [class*="booking-com"] p {
     @apply my-0;
   }

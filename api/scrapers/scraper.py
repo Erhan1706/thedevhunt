@@ -3,6 +3,30 @@ from jobs.models import Job
 from django.utils import timezone
 from django.db import transaction
 import requests
+from difflib import SequenceMatcher
+
+KEYWORD_MAPPINGS = {
+  'Software Development': [
+      'software', 'developer', 'frontend', 'backend', 'fullstack', 'qa', 'technical lead', 'tech lead', 'engineering manager',
+      'senior engineer', 'junior engineer', 'staff engineer', 'principal engineer', 'android', 'ios', 'mobile', 'web developer',
+  ],
+  'Data': [
+      'data', 'analytics', 'data science', 'data lead', 'head of data', 'data engineer'
+  ],
+  'ML & AI': [
+      'ml', 'machine learning', 'artificial intelligence', 'deep learning', 'nlp', 'computer vision', 'ai',
+      'ml researcher', 'ar/vr'
+  ],
+  'Cloud & Infrastructure': ['cloud', 'infrastructure', 'devops', 'sre', 'site reliability', 'platform engineer',
+                              'solutions architect', 'cloud architect', 'cloud engineer'],
+  'IT & Support': ['it', 'support', 'information technology', 'field engineering', 'customer support'],
+  'Product & Project Management': ['product manager', 'project manager', 'program manager', 'product owner',
+      'scrum master', 'business analyst', 'product management'
+  ],
+  'Cybersecurity': ['security', 'cybersecurity', 'security lead'],
+  'Hardware': ['hardware', 'hardware engineering', 'electrical engineering', 'system'],
+  'Design': ['design', 'designer', 'creative', 'ux', 'ui', 'design lead'],
+}
 
 # Abstract class for scraping job listings. All scrapers for specific websites should inherit from this class
 class Scraper(ABC):
@@ -43,6 +67,30 @@ class Scraper(ABC):
 
       return contains_tech_keyword and not contains_irrelevant_keyword
   
+  def classify_role_smart(self, job_role: str) -> str:
+    """
+    Classify a job role using fuzzy matching and keyword detection
+    """
+    job_role_clean = job_role.lower().strip()
+    
+    # Check for keyword matches
+    for category, keywords in KEYWORD_MAPPINGS.items():
+        if any(keyword in job_role_clean for keyword in keywords):
+            return category
+    
+    # Fallback to fuzzy matching against known examples
+    best_match = None
+    best_score = 0.6  # minimum similarity threshold
+
+    for category, examples in KEYWORD_MAPPINGS.items():
+        for example in examples:
+            similarity = SequenceMatcher(None, job_role_clean, example.lower()).ratio()
+            if similarity > best_score:
+                best_score = similarity
+                best_match = category
+    
+    return best_match or 'Other'
+
   def filter_tech_jobs(self, jobs):
     return [job for job in jobs if self.is_tech_role(job)]
   

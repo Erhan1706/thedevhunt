@@ -21,7 +21,7 @@ class AdyenScraper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['id'],
-        role= job['departments'][0]['name'],
+        role= self.classify_role_smart(job['departments'][0]['name']),
         company= self.company,
         location= [f"{job['location']['name']}, {job['country']}"],
         link_to_apply= job['absolute_url'],

@@ -193,7 +193,7 @@ class UberScraper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['id'],
-        role= job['department'],
+        role= self.classify_role_smart(job['department']),
         company= "Uber",
         location= locations,
         link_to_apply= f"https://www.uber.com/global/en/careers/list/{job['id']}",

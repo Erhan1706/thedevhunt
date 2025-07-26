@@ -35,7 +35,7 @@ class OptiverScraper(Scraper):
     result = []
     for job in jobs:
         listing = Job(
-            role = "Engineering",
+            role = self.classify_role_smart(job["post_title"]),
             company = "Optiver",
             title = job["post_title"],
             location= ["Amsterdam, Netherlands"] if city == 'amsterdam' else ["London, United Kingdom"],
