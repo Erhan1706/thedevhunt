@@ -16,7 +16,7 @@ class ApiConfig(AppConfig):
         try:
             if not PeriodicTask.objects.filter(name=task_name).exists():
                 schedule, _ = IntervalSchedule.objects.get_or_create(
-                    every= 2 if not prod else 4,
+                    every= 1 if not prod else 2,
                     period=IntervalSchedule.MINUTES if not prod else IntervalSchedule.HOURS,
                 )
 
