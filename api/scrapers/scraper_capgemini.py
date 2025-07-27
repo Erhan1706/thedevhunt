@@ -65,7 +65,7 @@ class CapgeminiScraper(Scraper):
       listing = Job(
         title= job['title'],
         slug= job['ref'],
-        role= self.classify_role_smart(job["professional_communities"]),
+        role= self.classify_role_smart(job["title"]),
         company= self.company,
         location= self.parse_locations(job["location"], job["country_code"]), 
         link_to_apply= job["apply_job_url"],

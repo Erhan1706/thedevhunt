@@ -100,20 +100,24 @@ Note: Some libraries used in this project may have compatibility issues on Windo
    ```sh
    git clone https://github.com/Erhan1706/thedevhunt.git
    ```
-2. Install the dependencies
+2. Create a local .env file and with the following ke-value pairs:
+  ```
+  DJANGO_DEBUG=True
+  DJANGO_PRODUCTION=False
+  DJANGO_SECRET_KEY=<YOU SECRET KEY>
+
+  ### POSTGRES CONFIGS
+  POSTGRES_USER=<YOUR USERNAME>
+  POSTGRES_PASSWORD=<YOUR PASSWORD>
+  POSTGRES_HOST=<YOUR HOST>
+  POSTGRES_PORT=<YOUR PORT>
+  POSTGRES_DB=<YOUR DB NAME>
+  ```
+3. Start the development server:
    ```sh
-   pip install -r requirements-dev.txt
+   docker compose up --build
    ```
-3. Apply the migrations
-   ```sh
-   python manage.py makemigrations
-   python manage.py migrate
-   ```
-4. Start the development server:
-   ```sh
-   python manage.py runserver
-   ```
-5. If you make any changes to the frontend styling, make sure to compile the tailwind in a separate terminal:
+4. **If you make any changes to the frontend styling, make sure to compile the tailwind in a separate terminal**, otherwise you won't see the differences:
    ```sh
    ./tailwindcss -i ./static/css/input.css -o ./static/css/output.css --watch
    ```
@@ -128,21 +132,16 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
  -->
 
-<!-- ROADMAP -->
-
-## Roadmap
-
-- [ ] Adding 10+ more companies
-- [ ] Asynchronous update of the job listing for each individual scraper
-- [ ] Internship section
-
 <!-- See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues). -->
 
 <!-- CONTRIBUTING -->
 
 ## Contributing
 
-Any contributions you make are **greatly appreciated**.
+Any contributions made are **greatly appreciated**.
+
+A logical contribution would be adding a scraper for a different company not yet supported. The listings are fetched from the backend api of the companies, usually I avoid scraping the main page directly and parsing the html. All the scrapers are at `api/scrapers`, they essentially follow the same template. The main challenge is the fact that each company has their data in different formats, so in same cases custom functionality needs to be included per scraper. The most common functions to be implemented for each scraper are: `filter_eu_jobs`, `filter_tech_jobs`, `scrape`, and `transform_data` which maps how the json is translated to the Job schema, to be stored in the db.  
+
 
 If you have a suggestion that would make this better, please fork the repo and create a pull request.
 Don't forget to give the project a star! Thanks again!
